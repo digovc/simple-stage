@@ -11,11 +11,16 @@
         </div>
       </div>
     </div>
-    <div class="fixed top-2 right-4 py-2 flex justify-end">
+    <div class="fixed top-2 right-4 py-2 flex justify-end space-x-2">
       <PrimaryButton @click="edit">
         Edit
       </PrimaryButton>
+      <SecundaryButton @click="showMenu">
+        Menu
+      </SecundaryButton>
     </div>
+
+    <RenderMenu ref="renderMenuRef"/>
   </div>
 </template>
 
@@ -28,12 +33,15 @@ import type { RenderLineModel } from "@/models/render-line.model";
 import ChordsRender from "@/pages/render/components/ChordsRender.vue";
 import PhraseRender from "@/pages/render/components/PhraseRender.vue";
 import PrimaryButton from "@/components/PrimaryButton.vue";
+import SecundaryButton from "@/components/SecundaryButton.vue";
+import RenderMenu from "@/pages/render/components/RenderMenu.vue";
 
 const id = ref<string>("");
 const router = useRouter();
 const music = ref<MusicModel>();
 const renderLines = ref<RenderLineModel[]>([]);
 const firstLine = ref<string>("");
+const renderMenuRef = ref<HTMLElement>();
 
 const backToHome = () => {
   router.replace('/home');
@@ -80,6 +88,10 @@ const renderLine = (lines: RenderLineModel[], line: string, index: number) => {
   const spaceCount = line.split(" ").length - 1;
   const isChords = spaceCount > letterCount / 2;
   lines.push({ id: index.toString(), text: line, isChords });
+};
+
+const showMenu = () => {
+  renderMenuRef.value?.show();
 };
 
 onMounted(() => {
