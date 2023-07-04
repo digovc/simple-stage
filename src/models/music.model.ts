@@ -4,4 +4,5 @@ export interface MusicModel {
   artist: string;
   tags: string[];
   content: string;
+  transpose: number;
 }

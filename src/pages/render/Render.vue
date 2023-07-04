@@ -42,7 +42,7 @@ import * as ChordTransposer from 'chord-transposer';
 
 const id = ref<string>("");
 const router = useRouter();
-const music = ref<MusicModel>();
+const music = ref<MusicModel>({} as MusicModel);
 const renderLines = ref<RenderLineModel[]>([]);
 const firstLine = ref<string>("");
 const renderMenuRef = ref<HTMLElement>() as any;
@@ -98,7 +98,13 @@ const renderLine = (lines: RenderLineModel[], line: string, index: number) => {
   const letterCount = line.length;
   const spaceCount = line.split(" ").length - 1;
   const isChords = spaceCount > letterCount / 2;
-  lines.push({ id: index.toString(), text: line, isChords });
+  let text = line;
+
+  if (isChords) {
+    text = transposeLineByNumber(text, music.value.transpose ?? 0);
+  }
+
+  lines.push({ id: index.toString(), text: text, isChords });
 };
 
 const showMenu = () => {
@@ -110,6 +116,15 @@ const transposeChords = (isUp: boolean) => {
     if (!line.isChords) continue;
     line.text = transposeLine(line.text, isUp);
   }
+
+  let transpose = music.value.transpose ?? 0;
+  transpose = isUp ? transpose + 1 : transpose - 1;
+
+  while (transpose > 11) transpose -= 12;
+  while (transpose < -11) transpose += 12;
+
+  music.value.transpose = transpose;
+  musicRepository.save(music.value);
 }
 
 const transposeLine = (line: string, isUp: boolean) => {
@@ -117,6 +132,14 @@ const transposeLine = (line: string, isUp: boolean) => {
     return ChordTransposer.transpose(line).up(1).toString();
   } else {
     return ChordTransposer.transpose(line).down(1).toString();
+  }
+}
+
+const transposeLineByNumber = (line: string, transpose: number) => {
+  if (transpose != 0) {
+    return ChordTransposer.transpose(line).up(transpose).toString();
+  } else {
+    return line;
   }
 }
 
