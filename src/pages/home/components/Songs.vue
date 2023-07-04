@@ -1,6 +1,6 @@
 <template>
   <div>
-    <List title="Musics">
+    <List title="Songs">
       <ListItem v-for="music in musics" :key="music.id" @click="render(music)">
         {{ music.title }}
       </ListItem>

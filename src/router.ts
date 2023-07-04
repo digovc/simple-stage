@@ -19,6 +19,11 @@ const router = createRouter({
       component: () => import('./pages/home/Home.vue')
     },
     {
+      path: '/playlist/:id',
+      name: 'playlist',
+      component: () => import('./pages/playlist/Playlist.vue')
+    },
+    {
       path: '/render/:id',
       name: 'render',
       component: () => import('./pages/render/Render.vue')

@@ -14,7 +14,7 @@
     <div class="space-y-12">
       <Search/>
       <Playlists/>
-      <Musics/>
+      <Songs/>
     </div>
 
     <Playlist v-if="isPlaylistDialogOpen" @onClose="isPlaylistDialogOpen = false"/>
@@ -24,11 +24,11 @@
 <script setup lang="ts">
 import { useRouter } from "vue-router";
 import PrimaryButton from "@/components/PrimaryButton.vue";
-import Musics from "@/pages/home/components/Musics.vue";
 import Playlists from "@/pages/home/components/Playlists.vue";
 import Search from "@/pages/home/components/Search.vue";
 import Playlist from "@/dialogs/playlist/Playlist.vue";
 import { ref } from "vue";
+import Songs from "@/pages/home/components/Songs.vue";
 
 const router = useRouter()
 const isPlaylistDialogOpen = ref(false)

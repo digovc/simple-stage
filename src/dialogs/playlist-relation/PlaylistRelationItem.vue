@@ -24,12 +24,16 @@ const props = defineProps({
 })
 
 const refreshRelation = () => {
+  if (!props.playlist) return;
+  props.playlist.musicIds = props.playlist.musicIds ?? []
   const musicId = router.currentRoute.value.params.id?.toString()
+  if (!musicId) return;
+  if (isLinked.value && props.playlist.musicIds.includes(musicId)) return;
 
   if (isLinked.value) {
-    props.playlist?.musicIds?.push(musicId)
+    props.playlist.musicIds.push(musicId)
   } else {
-    props.playlist?.musicIds?.splice(props.playlist?.musicIds?.indexOf(musicId), 1)
+    props.playlist.musicIds.splice(props.playlist.musicIds.indexOf(musicId), 1)
   }
 
   playlistRepository.save(props.playlist)
