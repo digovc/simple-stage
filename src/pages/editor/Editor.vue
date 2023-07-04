@@ -3,7 +3,7 @@
     <div>
       Editor
     </div>
-    <div class="grow border rounded focus-within:outline outline-gray-200 outline-1 overflow-x-hidden">
+    <div class="grow border rounded focus-within:shadow outline-1 overflow-x-hidden">
       <textarea class="w-full h-full p-2 pt-1 -mb-1.5 outline-none resize-none font-mono text-gray-700"
                 v-model="content"/>
     </div>
@@ -22,7 +22,7 @@
 import PrimaryButton from "@/components/PrimaryButton.vue";
 import SecundaryButton from "@/components/SecundaryButton.vue";
 import { onMounted, ref } from "vue";
-import type { MusicModel } from "@/models/music.model";
+import type { MusicRecord } from "@/records/music.record";
 import { musicRepository } from "@/services/music.repository";
 import { useRouter } from "vue-router";
 
@@ -54,7 +54,7 @@ const save = () => {
 
   const title = getMusicLine(0);
   const artist = getMusicLine(1);
-  const tags = getMusicLine(2)?.split(" ") ?? [];
+  const tags = getMusicLine(2)?.split(" ").map(x => x?.trim()).filter(x => x) ?? [];
 
   const music = {
     id: id.value,
@@ -62,7 +62,7 @@ const save = () => {
     artist: artist,
     tags: tags,
     content: content.value
-  } as MusicModel
+  } as MusicRecord
 
   musicRepository.save(music);
   router.back();

@@ -28,7 +28,7 @@
 <script setup lang="ts">
 import { onDeactivated, onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
-import type { MusicModel } from "@/models/music.model";
+import type { MusicRecord } from "@/records/music.record";
 import { musicRepository } from "@/services/music.repository";
 import type { RenderLineModel } from "@/models/render-line.model";
 import ChordsRender from "@/pages/render/components/ChordsRender.vue";
@@ -44,11 +44,11 @@ import ParagraphRender from "@/pages/render/components/ParagraphRender.vue";
 
 const id = ref<string>("");
 const router = useRouter();
-const music = ref<MusicModel>({} as MusicModel);
+const music = ref<MusicRecord>({} as MusicRecord);
 const renderLines = ref<RenderLineModel[]>([]);
 const firstLine = ref<string>("");
 const renderMenuRef = ref<HTMLElement>() as any;
-const onDestroy$ = new Subject<void>();
+const onDestroyed$ = new Subject<void>();
 
 const backToHome = () => {
   router.replace('/home');
@@ -73,7 +73,7 @@ const getContentLine = (lines: string[], index: number) => {
 };
 
 const listenTranspose = () => {
-  transposeService.onTranspose$.pipe(takeUntil(onDestroy$)).subscribe((isUp) => {
+  transposeService.onTranspose$.pipe(takeUntil(onDestroyed$)).subscribe((isUp) => {
     transposeChords(isUp);
   });
 }
@@ -81,12 +81,12 @@ const listenTranspose = () => {
 const loadMusic = () => {
   id.value = router.currentRoute.value.params.id?.toString() ?? "";
   if (!id.value) return backToHome();
-  music.value = musicRepository.getById(id.value) as MusicModel;
+  music.value = musicRepository.getById(id.value) as MusicRecord;
   if (!music.value) return backToHome();
   render(music.value)
 };
 
-const render = (music: MusicModel) => {
+const render = (music: MusicRecord) => {
   if (!music) return;
   if (!music.content) return;
 
@@ -155,13 +155,13 @@ const transposeLineByNumber = (line: string, transpose: number) => {
   }
 }
 
+onDeactivated(() => {
+  onDestroyed$.next();
+  onDestroyed$.complete();
+})
+
 onMounted(() => {
   loadMusic();
   listenTranspose();
-})
-
-onDeactivated(() => {
-  onDestroy$.next();
-  onDestroy$.complete();
 })
 </script>
