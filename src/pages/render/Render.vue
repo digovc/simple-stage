@@ -4,10 +4,11 @@
       <div class="font-semibold">
         {{ firstLine }}
       </div>
-      <div>
+      <div class="pb-96">
         <div v-for="line in renderLines" :id="line.id">
-          <ChordsRender v-if="line.isChords" :line="line"/>
-          <PhraseRender v-else :line="line"/>
+          <ParagraphRender v-if="line.type === 'paragraph'" :line="line"/>
+          <ChordsRender v-if="line.type === 'chords'" :line="line"/>
+          <PhraseRender v-if="line.type === 'phrase'" :line="line"/>
         </div>
       </div>
     </div>
@@ -38,6 +39,7 @@ import RenderMenu from "@/pages/render/components/RenderMenu.vue";
 import { transposeService } from "@/services/transpose.service";
 import { Subject, takeUntil } from "rxjs";
 import * as ChordTransposer from 'chord-transposer';
+import ParagraphRender from "@/pages/render/components/ParagraphRender.vue";
 
 
 const id = ref<string>("");
@@ -50,6 +52,15 @@ const onDestroy$ = new Subject<void>();
 
 const backToHome = () => {
   router.replace('/home');
+};
+
+const detectIsChords = (line: string) => {
+  const letterCount = line.length;
+  const spaceCount = line.split(" ").length - 1;
+  const isSpacePercentage = spaceCount / letterCount > 0.3;
+  const words = line.split(" ").filter((word) => word?.trim());
+  const isAllWordsChords = words.every((word) => word?.trim().match(/^[A-G].*$/));
+  return isSpacePercentage && isAllWordsChords;
 };
 
 const edit = () => {
@@ -95,16 +106,17 @@ const render = (music: MusicModel) => {
 };
 
 const renderLine = (lines: RenderLineModel[], line: string, index: number) => {
-  const letterCount = line.length;
-  const spaceCount = line.split(" ").length - 1;
-  const isChords = spaceCount > letterCount / 2;
+  const isChords = detectIsChords(line);
+  const isParagraph = !isChords && line?.trim().startsWith("[") && line?.trim().endsWith("]");
+  const type = isChords ? "chords" : isParagraph ? "paragraph" : "phrase";
+
   let text = line;
 
   if (isChords) {
     text = transposeLineByNumber(text, music.value.transpose ?? 0);
   }
 
-  lines.push({ id: index.toString(), text: text, isChords });
+  lines.push({ id: index.toString(), text: text, type } as RenderLineModel);
 };
 
 const showMenu = () => {
@@ -113,7 +125,7 @@ const showMenu = () => {
 
 const transposeChords = (isUp: boolean) => {
   for (const line of renderLines.value ?? []) {
-    if (!line.isChords) continue;
+    if (line.type !== 'chords') continue;
     line.text = transposeLine(line.text, isUp);
   }
 

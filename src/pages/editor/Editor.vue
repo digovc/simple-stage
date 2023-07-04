@@ -31,7 +31,7 @@ const content = ref<string>("");
 const router = useRouter();
 
 const cancel = () => {
-  router.replace("/home");
+  router.back();
 };
 
 const getMusicLine = (line: number) => {

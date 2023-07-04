@@ -4,15 +4,6 @@
       <MenuItem @click="openTranspose">
         Transpose
       </MenuItem>
-      <MenuItem>
-        Test 1
-      </MenuItem>
-      <MenuItem>
-        Test 2
-      </MenuItem>
-      <MenuItem>
-        Test 3
-      </MenuItem>
     </Menu>
 
     <Transpose ref="transposeRef"/>

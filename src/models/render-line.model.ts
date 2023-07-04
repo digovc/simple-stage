@@ -1,5 +1,5 @@
 export interface RenderLineModel {
   id: string;
-  isChords: boolean;
+  type: 'phrase' | 'paragraph' | 'chords'
   text: string;
 }
