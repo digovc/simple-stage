@@ -20,7 +20,7 @@ export abstract class RepositoryBase<TRecord extends RecordBase> {
       }
     }
 
-    return records;
+    return records.sort((a, b) => a.title.localeCompare(b.title));
   }
 
   getById(id: string): TRecord | null {
