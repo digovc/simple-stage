@@ -37,6 +37,7 @@ const tags = ref("")
 
 const createPlaylist = () => {
   const playlist = {
+    id: "",
     title: title.value,
     tags: tags.value.split(",").map((tag) => tag.trim()).filter((tag) => tag),
     musicIds: [],

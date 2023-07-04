@@ -17,7 +17,7 @@
       <Songs/>
     </div>
 
-    <Playlist v-if="isPlaylistDialogOpen" @onClose="isPlaylistDialogOpen = false"/>
+    <PlaylistForm v-if="isPlaylistDialogOpen" @onClose="isPlaylistDialogOpen = false"/>
   </div>
 </template>
 
@@ -26,9 +26,9 @@ import { useRouter } from "vue-router";
 import PrimaryButton from "@/components/PrimaryButton.vue";
 import Playlists from "@/pages/home/components/Playlists.vue";
 import Search from "@/pages/home/components/Search.vue";
-import Playlist from "@/dialogs/playlist/Playlist.vue";
 import { ref } from "vue";
 import Songs from "@/pages/home/components/Songs.vue";
+import PlaylistForm from "@/dialogs/playlist/PlaylistForm.vue";
 
 const router = useRouter()
 const isPlaylistDialogOpen = ref(false)
