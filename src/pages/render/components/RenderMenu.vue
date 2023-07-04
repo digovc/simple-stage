@@ -26,7 +26,7 @@ import { ref } from "vue";
 import Transpose from "@/dialogs/transpose/Transpose.vue";
 
 const isVisible = ref<boolean>(false);
-const transposeRef = ref<HTMLElement>();
+const transposeRef = ref<HTMLElement>() as any;
 
 const openTranspose = () => {
   isVisible.value = false;

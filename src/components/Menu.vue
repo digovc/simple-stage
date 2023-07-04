@@ -2,7 +2,7 @@
   <div>
     <Dialog @onClose="emits('onClose')">
       <div class="space-y-4">
-        <div class="text-center">
+        <div>
           Menu
         </div>
         <div class="grid grid-cols-2 gap-4">
