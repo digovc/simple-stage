@@ -3,6 +3,9 @@
     <div class="text-2xl">
       {{ playlist?.title }}
     </div>
+    <div>
+      <PlaylistMenu v-if="playlist" :playlist="playlist"/>
+    </div>
     <div class="text-lg">
       Songs
     </div>
@@ -31,6 +34,7 @@ import { playlistRepository } from "@/services/playlist.repository";
 import { useRouter } from "vue-router";
 import type { MusicRecord } from "@/records/music.record";
 import { musicRepository } from "@/services/music.repository";
+import PlaylistMenu from "@/pages/playlist/components/PlaylistMenu.vue";
 
 const playlist = ref<PlaylistRecord | null>(null);
 const router = useRouter();

@@ -1,11 +1,11 @@
 <template>
-  <div class="h-full p-4 space-y-4 flex flex-col">
-    <div>
+  <div class="h-full p-2 space-y-2 flex flex-col">
+    <div class="text-2xl">
       Editor
     </div>
     <div class="grow border rounded focus-within:shadow outline-1 overflow-x-hidden">
       <textarea class="w-full h-full p-2 pt-1 -mb-1.5 outline-none resize-none font-mono text-gray-700"
-                v-model="content"/>
+                v-model="content" placeholder="Put your music here..."></textarea>
     </div>
     <div class="flex justify-end space-x-2">
       <PrimaryButton @click="save">

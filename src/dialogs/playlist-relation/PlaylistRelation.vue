@@ -3,7 +3,7 @@
     <Dialog v-if="isVisible" @onClose="isVisible = false">
       <div class="space-y-8 w-60">
         <div>
-          Playlist relations
+          Playlists
         </div>
         <div>
           <PlaylistRelationItem v-for="playlist in playlists" :playlist="playlist" :key="playlist.id"/>

@@ -2,16 +2,20 @@
   <div>
     <Dialog v-if="isVisible" @onClose="isVisible = false">
       <div class="space-y-4">
-        <div>
+        <div class="text-2xl">
           Transpose
         </div>
-        <div class="grid grid-cols-2 gap-4">
-          <TransposeButton @click="changeTranspose(false)">
-            -
-          </TransposeButton>
-          <TransposeButton @click="changeTranspose(true)">
-            +
-          </TransposeButton>
+        <div class="flex justify-between space-x-4">
+          <PrimaryButton @click="changeTranspose(false)">
+            <div class="w-8 text-center">
+              -
+            </div>
+          </PrimaryButton>
+          <PrimaryButton @click="changeTranspose(true)">
+            <div class="w-8 text-center">
+              +
+            </div>
+          </PrimaryButton>
         </div>
       </div>
     </Dialog>
@@ -21,8 +25,8 @@
 <script setup lang="ts">
 import Dialog from "@/components/Dialog.vue";
 import { ref } from "vue";
-import TransposeButton from "@/dialogs/transpose/components/TransposeButton.vue";
 import { transposeService } from "@/services/transpose.service";
+import PrimaryButton from "@/components/PrimaryButton.vue";
 
 const isVisible = ref<boolean>(false);
 

@@ -1,19 +1,26 @@
 <template>
   <div>
-    <Menu v-if="isVisible" @onClose="isVisible = false">
-      <MenuItem @click="openTranspose">
-        Transpose
-      </MenuItem>
-      <MenuItem @click="openPlaylistRelation">
-        Add to playlist
-      </MenuItem>
-      <MenuItem v-if="previousMusicId" @click="openSong(previousMusicId)">
-        Previous song
-      </MenuItem>
-      <MenuItem v-if="nextMusicId" @click="openSong(nextMusicId)">
-        Next song
-      </MenuItem>
-    </Menu>
+    <Dialog v-if="isVisible" @onClose="isVisible = false">
+      <div class="space-y-4">
+        <div class="text-2xl">
+          Options
+        </div>
+        <div class="space-x-2">
+          <PrimaryButton @click="openTranspose">
+            Transpose
+          </PrimaryButton>
+          <PrimaryButton @click="openPlaylistRelation">
+            Playlists
+          </PrimaryButton>
+          <PrimaryButton v-if="previousMusicId" @click="openSong(previousMusicId)">
+            Previous song
+          </PrimaryButton>
+          <PrimaryButton v-if="nextMusicId" @click="openSong(nextMusicId)">
+            Next song
+          </PrimaryButton>
+        </div>
+      </div>
+    </Dialog>
 
     <PlaylistRelation ref="playlistRelationRef"/>
     <Transpose ref="transposeRef"/>
@@ -21,13 +28,13 @@
 </template>
 
 <script setup lang="ts">
-import Menu from "@/components/Menu.vue";
-import MenuItem from "@/components/MenuItem.vue";
 import { onMounted, ref } from "vue";
 import Transpose from "@/dialogs/transpose/Transpose.vue";
 import PlaylistRelation from "@/dialogs/playlist-relation/PlaylistRelation.vue";
 import { useRouter } from "vue-router";
 import { playlistRepository } from "@/services/playlist.repository";
+import PrimaryButton from "@/components/PrimaryButton.vue";
+import Dialog from "@/components/Dialog.vue";
 
 const isVisible = ref<boolean>(false);
 const playlistRelationRef = ref<HTMLElement>() as any;

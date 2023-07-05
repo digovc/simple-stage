@@ -6,6 +6,17 @@ export abstract class RepositoryBase<TRecord extends RecordBase> {
   onCreated$ = new Subject<TRecord>();
   onUpdated$ = new Subject<TRecord>();
 
+  delete(id: any) {
+    if (!id) return;
+    const table = this.getTableName();
+    const idsJson = localStorage.getItem(`${ table }-ids`) ?? "[]";
+    const ids = JSON.parse(idsJson);
+    const index = ids.indexOf(id);
+    if (index === -1) return;
+    ids.splice(index, 1);
+    localStorage.removeItem(id);
+  }
+
   getAll() {
     const table = this.getTableName();
     const idsJson = localStorage.getItem(`${ table }-ids`) ?? "[]";

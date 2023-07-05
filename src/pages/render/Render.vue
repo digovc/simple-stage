@@ -19,6 +19,9 @@
       <SecundaryButton @click="showMenu">
         Menu
       </SecundaryButton>
+      <SecundaryButton @click="backToPreviusPage">
+        Close
+      </SecundaryButton>
     </div>
 
     <RenderMenu ref="renderMenuRef"/>
@@ -50,8 +53,8 @@ const firstLine = ref<string>("");
 const renderMenuRef = ref<HTMLElement>() as any;
 const onDestroyed$ = new Subject<void>();
 
-const backToHome = () => {
-  router.replace('/home');
+const backToPreviusPage = () => {
+  router.back()
 };
 
 const detectIsChords = (line: string) => {
@@ -80,9 +83,9 @@ const listenTranspose = () => {
 
 const loadMusic = () => {
   id.value = router.currentRoute.value.params.id?.toString() ?? "";
-  if (!id.value) return backToHome();
+  if (!id.value) return backToPreviusPage();
   music.value = musicRepository.getById(id.value) as MusicRecord;
-  if (!music.value) return backToHome();
+  if (!music.value) return backToPreviusPage();
   render(music.value)
 };
 
@@ -95,7 +98,8 @@ const render = (music: MusicRecord) => {
   const title = getContentLine(contentLines, 0);
   const artist = getContentLine(contentLines, 1);
   const tags = getContentLine(contentLines, 2);
-  firstLine.value = `${ title } - ${ artist } - ${ tags }`;
+  const firstLineParts = [title, artist, tags].filter((part) => part?.trim());
+  firstLine.value = firstLineParts.join(" - ");
 
   for (let i = 3; i < contentLines.length; i++) {
     const line = contentLines[i];
