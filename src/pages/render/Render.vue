@@ -5,11 +5,11 @@
         {{ firstLine }}
       </div>
       <div class="pb-96 overflow-x-auto">
-        <div v-for="line in renderLines" :id="line.id">
+        <template v-for="line in renderLines" :key="line.id">
           <ParagraphRender v-if="line.type === 'paragraph'" :line="line"/>
           <ChordsRender v-if="line.type === 'chords'" :line="line"/>
           <PhraseRender v-if="line.type === 'phrase'" :line="line"/>
-        </div>
+        </template>
       </div>
     </div>
     <div class="fixed top-6 md:top-2 right-4 py-2 flex justify-end space-x-2 opacity-80">

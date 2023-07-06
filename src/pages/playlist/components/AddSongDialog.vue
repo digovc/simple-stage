@@ -10,7 +10,7 @@
                  v-model="search"/>
         </div>
         <div class="max-h-[350px] overflow-y-auto">
-          <div v-for="music in musics" :key="music.id">
+          <template v-for="music in musics" :key="music.id">
             <div v-if="!(music as any).isHidden">
               <div class="cursor-pointer select-none" @click="(music as any).isSelected = !(music as any).isSelected">
                 <div class="flex space-x-2">
@@ -21,7 +21,7 @@
                 </div>
               </div>
             </div>
-          </div>
+          </template>
         </div>
         <div class="space-x-2 flex justify-end">
           <PrimaryButton @click="save">

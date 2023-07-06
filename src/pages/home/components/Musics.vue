@@ -1,11 +1,11 @@
 <template>
   <div>
     <List title="Songs">
-      <div v-for="music in musics" :key="music.id" @click="render(music)">
-        <ListItem v-if="!(music as any).isHidden">
+      <template v-for="music in musics" :key="music.id">
+        <ListItem v-if="!(music as any).isHidden" @click="render(music)">
           {{ music.title }}
         </ListItem>
-      </div>
+      </template>
     </List>
   </div>
 </template>

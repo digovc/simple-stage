@@ -1,11 +1,11 @@
 <template>
   <div>
     <List title="Playlists">
-      <div v-for="playlist in playlists" :key="playlist.id" @click="openPlaylist(playlist)">
-        <ListItem v-if="!(playlist as any).isHidden">
+      <template v-for="playlist in playlists" :key="playlist.id">
+        <ListItem v-if="!(playlist as any).isHidden" @click="openPlaylist(playlist)">
           {{ playlist.title }}
         </ListItem>
-      </div>
+      </template>
     </List>
   </div>
 </template>
