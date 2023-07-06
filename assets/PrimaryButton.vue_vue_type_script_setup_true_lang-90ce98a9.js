@@ -1,1 +1,0 @@
-import{D as t}from"./music.repository-3056144a.js";import{d as a,k as o,e as r,f as s,a as n,h as _}from"./index-bfed1039.js";const c={class:"bg-green-500 text-white hover:bg-green-600 p-2 px-4"},d=a({__name:"PrimaryButton",setup(l){return(e,p)=>(s(),o(t,null,{default:r(()=>[n("div",c,[_(e.$slots,"default")])]),_:3}))}});export{d as _};
