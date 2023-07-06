@@ -7,16 +7,25 @@
       <HomeMenu/>
     </div>
     <div class="space-y-12">
-      <Search/>
-      <Playlists/>
-      <Songs/>
+      <HomeSearch @onSearch="search"/>
+      <Playlists ref="playlistsRef"/>
+      <Musics ref="musicsRef"/>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import Playlists from "@/pages/home/components/Playlists.vue";
-import Search from "@/pages/home/components/Search.vue";
-import Songs from "@/pages/home/components/Songs.vue";
 import HomeMenu from "@/pages/home/components/HomeMenu.vue";
+import Musics from "@/pages/home/components/Musics.vue";
+import { ref } from "vue";
+import HomeSearch from "@/pages/home/components/HomeSearch.vue";
+
+const playlistsRef = ref();
+const musicsRef = ref();
+
+const search = (value: string) => {
+  playlistsRef.value?.filterPlaylists(value);
+  musicsRef.value?.filterMusics(value);
+};
 </script>

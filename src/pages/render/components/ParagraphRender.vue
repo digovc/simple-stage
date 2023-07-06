@@ -1,5 +1,5 @@
 <template>
-  <div class="font-semibold whitespace-pre border-b mt-4">
+  <div class="font-semibold whitespace-pre border-b mt-4 pb-1">
     {{ line.text?.trim() }}
   </div>
 </template>

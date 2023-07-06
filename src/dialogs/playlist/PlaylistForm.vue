@@ -6,9 +6,9 @@
           New playlist
         </div>
         <div class="flex flex-col space-y-2">
-          <input type="text" class="w-96 border border-gray-300 rounded-md p-2" placeholder="Playlist name"
+          <input type="text" class="border border-gray-300 rounded-md p-2" placeholder="Playlist name"
                  v-model="title"/>
-          <input type="text" class="w-96 border border-gray-300 rounded-md p-2" placeholder="Tags" v-model="tags"/>
+          <input type="text" class="border border-gray-300 rounded-md p-2" placeholder="Tags" v-model="tags"/>
         </div>
         <div class="flex justify-end space-x-2">
           <PrimaryButton @click="createPlaylist">

@@ -6,6 +6,9 @@
           Options
         </div>
         <div class="space-x-2">
+          <PrimaryButton @click="edit">
+            Edit
+          </PrimaryButton>
           <PrimaryButton @click="openTranspose">
             Transpose
           </PrimaryButton>
@@ -43,8 +46,13 @@ const router = useRouter();
 const nextMusicId = ref<string>("");
 const previousMusicId = ref<string>("");
 
+const edit = () => {
+  const id = router.currentRoute.value.params.id?.toString() ?? "";
+  router.replace(`/editor/${ id }`);
+};
+
 const loadNextAndPrevious = () => {
-  const playlistId = router.currentRoute.value.params.playlistId?.toString() ?? "";
+  const playlistId = router.currentRoute.value.query.playlistId?.toString();
   if (!playlistId) return;
   const playlist = playlistRepository.getById(playlistId);
   if (!playlist) return;

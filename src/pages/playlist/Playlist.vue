@@ -4,15 +4,14 @@
       {{ playlist?.title }}
     </div>
     <div>
-      <PlaylistMenu v-if="playlist" :playlist="playlist"/>
+      <PlaylistMenu v-if="playlist" :playlist="playlist" @onMusicsChanged="refreshPlaylist"/>
     </div>
     <div class="text-lg">
       Songs
     </div>
     <div>
       <ul class="space-y-2">
-        <li v-for="music in musics" :key="music.id"
-            class="bg-gray-100 p-2 rounded cursor-pointer flex hover:shadow"
+        <li v-for="music in musics" :key="music.id" class="bg-gray-100 p-2 rounded cursor-pointer flex hover:shadow"
             @click="renderMusic(music)">
           <div class="flex justify-between grow">
             <div class="text-lg">
@@ -41,9 +40,10 @@ const router = useRouter();
 const musics = ref<MusicRecord[]>([]);
 
 const loadMusics = () => {
+  musics.value = [];
+
   if (playlist.value === null) return;
   if (!playlist.value.musicIds || playlist.value.musicIds.length === 0) return;
-  musics.value = [];
 
   for (const musicId of playlist.value.musicIds) {
     if (!musicId) continue;
@@ -54,8 +54,14 @@ const loadMusics = () => {
 
 const loadPlaylist = () => {
   const playlistId = router.currentRoute.value.params.id?.toString() ?? "";
+  if (!playlistId) return;
   playlist.value = playlistRepository.getById(playlistId)
 };
+
+const refreshPlaylist = () => {
+  loadPlaylist();
+  loadMusics();
+}
 
 const renderMusic = (music: MusicRecord) => {
   const path = `/render/${ music.id }`;
@@ -63,7 +69,6 @@ const renderMusic = (music: MusicRecord) => {
 }
 
 onMounted(() => {
-  loadPlaylist();
-  loadMusics();
+  refreshPlaylist()
 })
 </script>

@@ -1,18 +1,18 @@
 <template>
   <div>
-    <div class="space-x-2">
+    <div class="space-x-2 overflow-x-auto whitespace-nowrap pb-2">
       <PrimaryButton @click="router.push('/editor')">
-        Create a song
+        + Song
       </PrimaryButton>
       <PrimaryButton @click="isPlaylistDialogOpen = true">
-        Create a playlist
+        + Playlist
       </PrimaryButton>
       <SecundaryButton @click="exportAllData">
-        Export all data
+        Export
       </SecundaryButton>
-      <DangerButton @click="importAllData">
-        Import all data
-      </DangerButton>
+      <SecundaryButton @click="importAllData">
+        Import
+      </SecundaryButton>
     </div>
 
     <div>

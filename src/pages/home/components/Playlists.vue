@@ -1,9 +1,11 @@
 <template>
   <div>
     <List title="Playlists">
-      <ListItem v-for="playlist in playlists" :key="playlist.id" @click="openPlaylist(playlist)">
-        {{ playlist.title }}
-      </ListItem>
+      <div v-for="playlist in playlists" :key="playlist.id" @click="openPlaylist(playlist)">
+        <ListItem v-if="!(playlist as any).isHidden">
+          {{ playlist.title }}
+        </ListItem>
+      </div>
     </List>
   </div>
 </template>
@@ -19,6 +21,13 @@ import { useRouter } from "vue-router";
 const playlists = ref<PlaylistRecord[]>([]);
 const onDestroyed$ = new Subject<void>();
 const router = useRouter();
+
+const filterPlaylists = (query: string) => {
+  for (const playlist of playlists.value ?? []) {
+    const term = [playlist.title, playlist.tags].join(" ").toLowerCase();
+    (playlist as any).isHidden = term && !term.includes(query);
+  }
+};
 
 const listenPlaylistCreated = () => {
   playlistRepository.onCreated$.pipe(takeUntil(onDestroyed$)).subscribe((playlist) => {
@@ -40,5 +49,9 @@ onDeactivated(() => {
 onMounted(async () => {
   playlists.value = playlistRepository.getAll();
   listenPlaylistCreated();
+})
+
+defineExpose({
+  filterPlaylists
 })
 </script>

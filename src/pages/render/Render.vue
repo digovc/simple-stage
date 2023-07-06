@@ -4,7 +4,7 @@
       <div class="font-semibold">
         {{ firstLine }}
       </div>
-      <div class="pb-96">
+      <div class="pb-96 overflow-x-auto">
         <div v-for="line in renderLines" :id="line.id">
           <ParagraphRender v-if="line.type === 'paragraph'" :line="line"/>
           <ChordsRender v-if="line.type === 'chords'" :line="line"/>
@@ -12,19 +12,15 @@
         </div>
       </div>
     </div>
-    <div class="fixed top-2 right-4 py-2 flex justify-end space-x-2">
-      <PrimaryButton @click="edit">
-        Edit
-      </PrimaryButton>
-      <SecundaryButton @click="showMenu">
+    <div class="fixed top-6 md:top-2 right-4 py-2 flex justify-end space-x-2 opacity-80">
+      <PrimaryButton @click="showMenu">
         Menu
-      </SecundaryButton>
+      </PrimaryButton>
       <SecundaryButton @click="backToPreviusPage">
         Close
       </SecundaryButton>
     </div>
-
-    <RenderMenu ref="renderMenuRef"/>
+    <RenderMenuDialog ref="renderMenuDialogRef"/>
   </div>
 </template>
 
@@ -38,19 +34,18 @@ import ChordsRender from "@/pages/render/components/ChordsRender.vue";
 import PhraseRender from "@/pages/render/components/PhraseRender.vue";
 import PrimaryButton from "@/components/PrimaryButton.vue";
 import SecundaryButton from "@/components/SecundaryButton.vue";
-import RenderMenu from "@/pages/render/components/RenderMenu.vue";
 import { transposeService } from "@/services/transpose.service";
 import { Subject, takeUntil } from "rxjs";
 import * as ChordTransposer from 'chord-transposer';
 import ParagraphRender from "@/pages/render/components/ParagraphRender.vue";
-
+import RenderMenuDialog from "@/pages/render/components/RenderMenuDialog.vue";
 
 const id = ref<string>("");
 const router = useRouter();
 const music = ref<MusicRecord>({} as MusicRecord);
 const renderLines = ref<RenderLineModel[]>([]);
 const firstLine = ref<string>("");
-const renderMenuRef = ref<HTMLElement>() as any;
+const renderMenuDialogRef = ref<HTMLElement>() as any;
 const onDestroyed$ = new Subject<void>();
 
 const backToPreviusPage = () => {
@@ -64,10 +59,6 @@ const detectIsChords = (line: string) => {
   const words = line.split(" ").filter((word) => word?.trim());
   const isAllWordsChords = words.every((word) => word?.trim().match(/^[A-G].*$/));
   return isSpacePercentage && isAllWordsChords;
-};
-
-const edit = () => {
-  router.replace(`/editor/${ id.value }`);
 };
 
 const getContentLine = (lines: string[], index: number) => {
@@ -124,7 +115,7 @@ const renderLine = (lines: RenderLineModel[], line: string, index: number) => {
 };
 
 const showMenu = () => {
-  renderMenuRef.value?.show();
+  renderMenuDialogRef.value?.show();
 };
 
 const transposeChords = (isUp: boolean) => {
