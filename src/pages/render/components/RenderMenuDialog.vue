@@ -5,7 +5,7 @@
         <div class="text-2xl">
           Options
         </div>
-        <div class="space-x-2">
+        <div class="space-x-2 text-center">
           <PrimaryButton @click="edit">
             Edit
           </PrimaryButton>
@@ -16,10 +16,10 @@
             Playlists
           </PrimaryButton>
           <PrimaryButton v-if="previousMusicId" @click="openSong(previousMusicId)">
-            Previous song
+            Previous
           </PrimaryButton>
           <PrimaryButton v-if="nextMusicId" @click="openSong(nextMusicId)">
-            Next song
+            Next
           </PrimaryButton>
         </div>
       </div>
@@ -48,7 +48,7 @@ const previousMusicId = ref<string>("");
 
 const edit = () => {
   const id = router.currentRoute.value.params.id?.toString() ?? "";
-  router.replace(`/editor/${ id }`);
+  router.push(`/editor/${ id }`);
 };
 
 const loadNextAndPrevious = () => {
@@ -79,8 +79,12 @@ const openPlaylistRelation = () => {
 };
 
 const openSong = (id: string) => {
+  if (!id) return;
   isVisible.value = false;
-  router.replace(`/render/${ id }`);
+  const url = `/render/${ id }`;
+  const query = router.currentRoute.value.query;
+  router.replace({ path: url, query });
+  setTimeout(()=>location.reload());
 };
 
 const openTranspose = () => {
@@ -99,5 +103,4 @@ onMounted(() => {
 defineExpose({
   show
 })
-
 </script>

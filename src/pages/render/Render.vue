@@ -1,10 +1,10 @@
 <template>
-  <div class="h-full font-mono p-2 relative">
-    <div>
-      <div class="font-semibold">
+  <div ref="divContainerRef" class="h-full font-mono relative">
+    <div class="h-full flex flex-col">
+      <div class="font-semibold p-2">
         {{ firstLine }}
       </div>
-      <div class="pb-96 overflow-x-auto">
+      <div class="pb-24 overflow-x-auto grow p-2">
         <template v-for="line in renderLines" :key="line.id">
           <ParagraphRender v-if="line.type === 'paragraph'" :line="line"/>
           <ChordsRender v-if="line.type === 'chords'" :line="line"/>
@@ -47,6 +47,7 @@ const renderLines = ref<RenderLineModel[]>([]);
 const firstLine = ref<string>("");
 const renderMenuDialogRef = ref<HTMLElement>() as any;
 const onDestroyed$ = new Subject<void>();
+const divContainerRef = ref<HTMLElement>() as any;
 
 const backToPreviusPage = () => {
   router.back()
@@ -114,6 +115,10 @@ const renderLine = (lines: RenderLineModel[], line: string, index: number) => {
   lines.push({ id: index.toString(), text: text, type } as RenderLineModel);
 };
 
+const scrollToTop = () => {
+  divContainerRef.value?.scrollTo(0, 0);
+};
+
 const showMenu = () => {
   renderMenuDialogRef.value?.show();
 };
@@ -158,5 +163,6 @@ onDeactivated(() => {
 onMounted(() => {
   loadMusic();
   listenTranspose();
+  scrollToTop();
 })
 </script>

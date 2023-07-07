@@ -1,23 +1,24 @@
 <template>
-  <div class="space-y-4 p-4">
-    <div class="text-2xl">
+  <div class="space-y-4 h-full flex flex-col pt-2">
+    <div class="text-2xl px-2">
       {{ playlist?.title }}
     </div>
-    <div>
+    <div class="px-2">
       <PlaylistMenu v-if="playlist" :playlist="playlist" @onMusicsChanged="refreshPlaylist"/>
     </div>
-    <div class="text-lg">
+    <div class="text-lg px-2">
       Songs
     </div>
-    <div>
+    <div class="grow overflow-y-auto p-2 pb-48">
       <draggable class="space-y-2" :list="musics" @change="saveNewOrder">
-        <div v-for="music in musics" :key="music.id" class="border p-1 px-2 rounded cursor-pointer flex hover:shadow"
-             @click="renderMusic(music)">
-          <div class="flex justify-between grow">
-            <div class="text-lg">
+        <div v-for="music in musics" :key="music.id" class="border p-1 px-2 rounded cursor-pointer flex hover:shadow">
+          <div class="flex w-full space-x-2 whitespace-nowrap overflow-x-hidden">
+            <input type="checkbox" v-model="(music as any).isSelected"
+                   @change="refreshMusicSelected(music.id, (music as any).isSelected)"/>
+            <div class="text-lg grow" @click="renderMusic(music)">
               {{ music.title }}
             </div>
-            <div class="text-sm pt-1 text-gray-600">
+            <div class="text-sm pt-1 text-gray-600" @click="renderMusic(music)">
               {{ music.artist }}
             </div>
           </div>
@@ -49,6 +50,7 @@ const loadMusics = () => {
   for (const musicId of playlist.value.musicIds) {
     if (!musicId) continue;
     const music = musicRepository.getById(musicId);
+    (music as any).isSelected = playlist.value.selectedMusicIds?.includes(musicId) ?? false;
     if (music) musics.value.push(music);
   }
 };
@@ -62,6 +64,24 @@ const loadPlaylist = () => {
 const refreshPlaylist = () => {
   loadPlaylist();
   loadMusics();
+}
+
+const refreshMusicSelected = (musicId: string, isSelected: boolean) => {
+  if (playlist.value === null) return;
+  const selectedMusicIds = playlist.value.selectedMusicIds ?? [];
+
+  if (isSelected && !selectedMusicIds.includes(musicId)) {
+    selectedMusicIds.push(musicId);
+  } else {
+    const index = selectedMusicIds.indexOf(musicId);
+
+    if (index > -1) {
+      selectedMusicIds.splice(index, 1);
+    }
+  }
+
+  playlist.value.selectedMusicIds = selectedMusicIds;
+  playlistRepository.save(playlist.value);
 }
 
 const renderMusic = (music: MusicRecord) => {

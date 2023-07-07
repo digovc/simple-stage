@@ -1,5 +1,5 @@
 <template>
-  <div class="text-orange-500 -mb-1.5 whitespace-pre">
+  <div class="text-red-400 -mb-1.5 whitespace-pre">
     {{ line.text }}
   </div>
 </template>

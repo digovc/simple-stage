@@ -33,13 +33,20 @@ const router = useRouter()
 const isPlaylistDialogOpen = ref(false)
 
 const exportAllData = () => {
-  const data = JSON.stringify(localStorage)
-  const blob = new Blob([data], { type: 'text/plain' })
-  const a = document.createElement('a')
-  a.download = 'simple-stage-data.txt'
-  a.href = window.URL.createObjectURL(blob)
-  a.dataset.downloadurl = ['text/plain', a.download, a.href].join(':')
-  a.click()
+  const data = JSON.stringify(localStorage);
+  const blob = new Blob([data], { type: 'text/plain;charset=utf-8' });
+  const a = document.createElement('a');
+  a.download = 'simple-stage-data.txt';
+  a.href = URL.createObjectURL(blob);
+  a.dataset.downloadurl = ['text/plain', a.download, a.href].join(':');
+  a.style.display = 'none';
+
+  document.body.appendChild(a);
+
+  const event = new MouseEvent('click');
+  a.dispatchEvent(event);
+
+  document.body.removeChild(a);
 }
 
 const importAllData = () => {

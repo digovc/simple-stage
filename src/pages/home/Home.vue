@@ -6,7 +6,7 @@
     <div>
       <HomeMenu/>
     </div>
-    <div class="space-y-12">
+    <div class="space-y-12 pb-24">
       <HomeSearch @onSearch="search"/>
       <Playlists ref="playlistsRef"/>
       <Musics ref="musicsRef"/>

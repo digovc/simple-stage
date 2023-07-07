@@ -26,7 +26,7 @@ const router = createRouter({
     {
       path: '/render/:id',
       name: 'render',
-      component: () => import('./pages/render/Render.vue')
+      component: () => import('./pages/render/Render.vue'),
     },
     {
       path: '/',

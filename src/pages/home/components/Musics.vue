@@ -3,7 +3,9 @@
     <List title="Songs">
       <template v-for="music in musics" :key="music.id">
         <ListItem v-if="!(music as any).isHidden" @click="render(music)">
-          {{ music.title }}
+          <div class="text-xs">
+            {{ music.title }}
+          </div>
         </ListItem>
       </template>
     </List>
