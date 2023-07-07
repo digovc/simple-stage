@@ -1,6 +1,6 @@
 <template>
   <DefaultButton>
-    <div class="bg-green-500 text-white hover:bg-green-600 p-2 px-4">
+    <div class="bg-green-500 text-white hover:bg-green-600 p-2 px-4 rounded">
       <slot/>
     </div>
   </DefaultButton>

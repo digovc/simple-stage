@@ -13,9 +13,9 @@
           <template v-for="music in musics" :key="music.id">
             <div v-if="!(music as any).isHidden">
               <div class="cursor-pointer select-none" @click="(music as any).isSelected = !(music as any).isSelected">
-                <div class="flex space-x-2">
+                <div class="flex space-x-2 place-items-center">
                   <input type="checkbox" v-model="(music as any).isSelected" ref="checkboxRef"/>
-                  <div>
+                  <div class="whitespace-nowrap text-sm">
                     {{ music.title }}
                   </div>
                 </div>
