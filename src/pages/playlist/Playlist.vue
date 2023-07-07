@@ -10,9 +10,9 @@
       Songs
     </div>
     <div>
-      <ul class="space-y-2">
-        <li v-for="music in musics" :key="music.id" class="bg-gray-100 p-2 rounded cursor-pointer flex hover:shadow"
-            @click="renderMusic(music)">
+      <draggable class="space-y-2" :list="musics" @change="saveNewOrder">
+        <div v-for="music in musics" :key="music.id" class="border p-1 px-2 rounded cursor-pointer flex hover:shadow"
+             @click="renderMusic(music)">
           <div class="flex justify-between grow">
             <div class="text-lg">
               {{ music.title }}
@@ -21,8 +21,8 @@
               {{ music.artist }}
             </div>
           </div>
-        </li>
-      </ul>
+        </div>
+      </draggable>
     </div>
   </div>
 </template>
@@ -34,6 +34,7 @@ import { useRouter } from "vue-router";
 import type { MusicRecord } from "@/records/music.record";
 import { musicRepository } from "@/services/music.repository";
 import PlaylistMenu from "@/pages/playlist/components/PlaylistMenu.vue";
+import { VueDraggableNext as draggable } from 'vue-draggable-next'
 
 const playlist = ref<PlaylistRecord | null>(null);
 const router = useRouter();
@@ -66,6 +67,12 @@ const refreshPlaylist = () => {
 const renderMusic = (music: MusicRecord) => {
   const path = `/render/${ music.id }`;
   router.push({ path: path, query: { playlistId: playlist.value?.id } });
+}
+
+const saveNewOrder = () => {
+  if (playlist.value === null) return;
+  playlist.value.musicIds = musics.value.map(music => music.id);
+  playlistRepository.save(playlist.value);
 }
 
 onMounted(() => {
