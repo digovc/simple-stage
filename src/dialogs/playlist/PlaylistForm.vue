@@ -41,6 +41,7 @@ const createPlaylist = () => {
     title: title.value,
     tags: tags.value.split(",").map((tag) => tag.trim()).filter((tag) => tag),
     musicIds: [],
+    selectedMusicIds: [],
   } as PlaylistRecord
 
   playlistRepository.save(playlist)
