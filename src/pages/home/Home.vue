@@ -1,7 +1,10 @@
 <template>
-  <div class="h-full flex flex-col space-y-8 p-4">
-    <div class="text-5xl">
-      Simple Stage
+  <div class="h-full flex flex-col space-y-8 p-4 overflow-y-auto">
+    <div class="flex space-x-2">
+      <div style="background-image: url(/public/logo-green.svg)" class="w-12 h-12 bg-center bg-no-repeat"/>
+      <div class="text-5xl">
+        Simple Stage
+      </div>
     </div>
     <div>
       <HomeMenu/>

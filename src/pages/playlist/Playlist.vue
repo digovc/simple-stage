@@ -11,11 +11,12 @@
     </div>
     <div class="grow overflow-y-auto p-2 pb-48">
       <draggable class="space-y-2" :list="musics" @change="saveNewOrder">
-        <div v-for="music in musics" :key="music.id" class="border p-1 px-2 rounded cursor-pointer flex hover:shadow">
+        <div v-for="music in musics" :key="music.id"
+             class="border p-1 px-2 rounded cursor-pointer flex hover:shadow bg-white">
           <div class="flex w-full space-x-2 whitespace-nowrap overflow-x-hidden">
             <input type="checkbox" v-model="(music as any).isSelected"
                    @change="refreshMusicSelected(music.id, (music as any).isSelected)"/>
-            <div class="text-lg grow" @click="renderMusic(music)">
+            <div class="grow" @click="renderMusic(music)">
               {{ music.title }}
             </div>
             <div class="text-sm pt-1 text-gray-600" @click="renderMusic(music)">
