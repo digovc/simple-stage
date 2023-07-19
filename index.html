@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8">
-    <link rel="icon" href="/public/logo-white.svg">
+    <link rel="icon" href="/src/assets/logo-white.svg">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="manifest" href="/public/manifest.json">
     <title>
@@ -15,7 +15,7 @@
     <script>
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
-          navigator.serviceWorker.register('/public/sw.js');
+          navigator.serviceWorker.register('sw.js');
         });
       }
     </script>
