@@ -1,7 +1,7 @@
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open('better-chatgpt-cache').then((cache) => {
-      return cache.addAll(['/']);
+      return cache.addAll(['/simple-stage']);
     })
   );
 });
