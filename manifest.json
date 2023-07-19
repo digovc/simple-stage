@@ -1,0 +1,26 @@
+{
+  "short_name": "Simple Stage",
+  "name": "Simple Stage",
+  "description": "Simples Stage is an open-source application for musicians to store and use their favorite songs with chords during live performances.",
+  "start_url": "/simple-stage",
+  "display": "fullscreen",
+  "background_color": "#f5f5f5",
+  "theme_color": "#47ff79",
+  "icons": [
+    {
+      "src": "/public/logo-180.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    },
+    {
+      "src": "/public/logo-32.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    },
+    {
+      "src": "/public/logo-16.png",
+      "sizes": "16x16",
+      "type": "image/png"
+    }
+  ]
+}
