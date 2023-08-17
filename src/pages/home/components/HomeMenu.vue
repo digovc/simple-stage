@@ -13,6 +13,9 @@
       <SecundaryButton @click="importAllData">
         Import
       </SecundaryButton>
+      <SecundaryButton @click="requestFullscreen">
+        Fullscreen
+      </SecundaryButton>
     </div>
 
     <div>
@@ -27,7 +30,6 @@ import { useRouter } from "vue-router";
 import PlaylistForm from "@/dialogs/playlist/PlaylistForm.vue";
 import { ref } from "vue";
 import SecundaryButton from "@/components/SecundaryButton.vue";
-import DangerButton from "@/components/DangerButton.vue";
 
 const router = useRouter()
 const isPlaylistDialogOpen = ref(false)
@@ -68,5 +70,12 @@ const importAllData = () => {
     reader.readAsText(file)
   }
   input.click()
+}
+
+const requestFullscreen = () => {
+  const element = document.documentElement
+  if (element.requestFullscreen) {
+    element.requestFullscreen()
+  }
 }
 </script>

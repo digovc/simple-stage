@@ -25,7 +25,7 @@
 </template>
 
 <script setup lang="ts">
-import { onDeactivated, onMounted, ref } from "vue";
+import { onDeactivated, onMounted, onUnmounted, ref } from "vue";
 import { useRouter } from "vue-router";
 import type { MusicRecord } from "@/records/music.record";
 import { musicRepository } from "@/services/music.repository";
@@ -155,14 +155,14 @@ const transposeLineByNumber = (line: string, transpose: number) => {
   }
 }
 
-onDeactivated(() => {
-  onDestroyed$.next();
-  onDestroyed$.complete();
-})
-
 onMounted(() => {
   loadMusic();
   listenTranspose();
   scrollToTop();
+})
+
+onUnmounted(() => {
+  onDestroyed$.next();
+  onDestroyed$.complete();
 })
 </script>

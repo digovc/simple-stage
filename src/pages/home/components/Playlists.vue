@@ -10,7 +10,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import { onDeactivated, onMounted, ref } from "vue";
+import { onDeactivated, onMounted, onUnmounted, ref } from "vue";
 import ListItem from "@/components/ListItem.vue";
 import List from "@/components/List.vue";
 import type { PlaylistRecord } from "@/records/playlist.record";
@@ -41,14 +41,14 @@ const openPlaylist = (playlist: PlaylistRecord) => {
   router.push(`/playlist/${ playlistId }`);
 };
 
-onDeactivated(() => {
-  onDestroyed$.next();
-  onDestroyed$.complete();
-})
-
 onMounted(async () => {
   playlists.value = playlistRepository.getAll();
   listenPlaylistCreated();
+})
+
+onUnmounted(() => {
+  onDestroyed$.next();
+  onDestroyed$.complete();
 })
 
 defineExpose({
