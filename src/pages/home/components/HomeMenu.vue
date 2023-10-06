@@ -30,6 +30,7 @@ import { useRouter } from "vue-router";
 import PlaylistForm from "@/dialogs/playlist/PlaylistForm.vue";
 import { ref } from "vue";
 import SecundaryButton from "@/components/SecundaryButton.vue";
+import { fullscreenService } from "@/services/fullscreen.service";
 
 const router = useRouter()
 const isPlaylistDialogOpen = ref(false)
@@ -72,10 +73,7 @@ const importAllData = () => {
   input.click()
 }
 
-const requestFullscreen = () => {
-  const element = document.documentElement
-  if (element.requestFullscreen) {
-    element.requestFullscreen()
-  }
+const requestFullscreen = async () => {
+  await fullscreenService.requestFullscreen()
 }
 </script>

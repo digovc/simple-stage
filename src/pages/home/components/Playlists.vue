@@ -35,14 +35,19 @@ const listenPlaylistCreated = () => {
   });
 };
 
+const loadPlaylists = () => {
+  const playlistsTemp = playlistRepository.getAll();
+  playlistsTemp.reverse();
+  playlists.value = playlistsTemp;
+};
+
 const openPlaylist = (playlist: PlaylistRecord) => {
   const playlistId = playlist?.id;
   if (!playlistId) return;
   router.push(`/playlist/${ playlistId }`);
 };
-
 onMounted(async () => {
-  playlists.value = playlistRepository.getAll();
+  loadPlaylists();
   listenPlaylistCreated();
 })
 

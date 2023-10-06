@@ -16,6 +16,9 @@
       <PrimaryButton @click="showMenu">
         Menu
       </PrimaryButton>
+      <SecundaryButton @click="requestFullscreen">
+        Fullscreen
+      </SecundaryButton>
       <SecundaryButton @click="backToPreviusPage">
         Close
       </SecundaryButton>
@@ -39,6 +42,7 @@ import { Subject, takeUntil } from "rxjs";
 import * as ChordTransposer from 'chord-transposer';
 import ParagraphRender from "@/pages/render/components/ParagraphRender.vue";
 import RenderMenuDialog from "@/pages/render/components/RenderMenuDialog.vue";
+import { fullscreenService } from "@/services/fullscreen.service";
 
 const id = ref<string>("");
 const router = useRouter();
@@ -113,6 +117,10 @@ const renderLine = (lines: RenderLineModel[], line: string, index: number) => {
   }
 
   lines.push({ id: index.toString(), text: text, type } as RenderLineModel);
+};
+
+const requestFullscreen = () => {
+  fullscreenService.requestFullscreen();
 };
 
 const scrollToTop = () => {

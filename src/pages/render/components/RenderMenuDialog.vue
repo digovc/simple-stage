@@ -5,7 +5,7 @@
         <div class="text-2xl">
           Options
         </div>
-        <div class="space-x-2 text-center">
+        <div class="space-x-2">
           <PrimaryButton @click="edit">
             Edit
           </PrimaryButton>
