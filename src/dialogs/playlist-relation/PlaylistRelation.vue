@@ -1,11 +1,11 @@
 <template>
   <div>
     <Dialog v-if="isVisible" @onClose="isVisible = false">
-      <div class="space-y-8 w-60">
+      <div class="space-y-8 w-full">
         <div>
           Playlists
         </div>
-        <div>
+        <div class="h-80 overflow-y-auto w-full">
           <PlaylistRelationItem v-for="playlist in playlists" :playlist="playlist" :key="playlist.id"/>
         </div>
         <div class="flex justify-end">

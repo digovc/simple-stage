@@ -13,9 +13,9 @@
       </div>
     </div>
     <div class="fixed top-6 md:top-2 right-4 py-2 flex justify-end space-x-2 opacity-80">
-      <PrimaryButton @click="showMenu">
+      <SecundaryButton @click="showMenu">
         Menu
-      </PrimaryButton>
+      </SecundaryButton>
       <SecundaryButton @click="requestFullscreen">
         Fullscreen
       </SecundaryButton>
@@ -28,14 +28,13 @@
 </template>
 
 <script setup lang="ts">
-import { onDeactivated, onMounted, onUnmounted, ref } from "vue";
+import { onMounted, onUnmounted, ref } from "vue";
 import { useRouter } from "vue-router";
 import type { MusicRecord } from "@/records/music.record";
 import { musicRepository } from "@/services/music.repository";
 import type { RenderLineModel } from "@/models/render-line.model";
 import ChordsRender from "@/pages/render/components/ChordsRender.vue";
 import PhraseRender from "@/pages/render/components/PhraseRender.vue";
-import PrimaryButton from "@/components/PrimaryButton.vue";
 import SecundaryButton from "@/components/SecundaryButton.vue";
 import { transposeService } from "@/services/transpose.service";
 import { Subject, takeUntil } from "rxjs";

@@ -65,7 +65,7 @@ const save = () => {
   } as MusicRecord
 
   musicRepository.save(music);
-  router.replace(`/render/${ music.id }`);
+  router.back();
 };
 
 onMounted(() => {

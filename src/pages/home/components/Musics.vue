@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="w-full">
     <List title="Songs">
       <template v-for="music in musics" :key="music.id">
         <ListItem v-if="!(music as any).isHidden" @click="render(music)">

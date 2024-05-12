@@ -1,6 +1,6 @@
 <template>
-  <div class="h-full flex place-content-center place-items-center">
-    <div class="bg-center bg-gray-100 bg-no-repeat w-screen h-screen absolute"
+  <div class="bg-gray-100 h-full flex place-content-center place-items-center p-48">
+    <div class="bg-center bg-no-repeat w-full h-full"
          :style="`background-image: url(${logoUrl})`"/>
   </div>
 </template>

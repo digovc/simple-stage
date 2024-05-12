@@ -1,5 +1,5 @@
 <template>
-  <div class="p-2 border rounded cursor-pointer hover:shadow text-sm bg-white">
+  <div class="p-2 border rounded cursor-pointer hover:shadow text-sm">
     <slot/>
   </div>
 </template>

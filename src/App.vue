@@ -1,7 +1,8 @@
 <template>
-  <div class="h-full">
-    <div class="bg-center bg-gray-100 bg-no-repeat w-screen h-screen absolute -z-10 opacity-5"
-         :style="`background-image: url(${logoUrl})`"/>
+  <div class="h-full text-white">
+    <div class="bg-gray-600 w-screen h-screen absolute -z-10 flex justify-center pt-80">
+      <div :style="`background-image: url(${logoUrl})`" class="bg-no-repeat bg-center w-80 h-80 opacity-5"/>
+    </div>
     <RouterView/>
   </div>
 </template>

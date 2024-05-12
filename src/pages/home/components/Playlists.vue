@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="w-full">
     <List title="Playlists">
       <template v-for="playlist in playlists" :key="playlist.id">
         <ListItem v-if="!(playlist as any).isHidden" @click="openPlaylist(playlist)">
