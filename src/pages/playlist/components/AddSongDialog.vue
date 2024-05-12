@@ -6,7 +6,7 @@
           Select songs
         </div>
         <div>
-          <input type="text" class="w-full border p-2 rounded-full outline-none" placeholder="Search..."
+          <input type="text" class="w-full border p-2 rounded-full outline-none text-black" placeholder="Search..."
                  v-model="search"/>
         </div>
         <div class="max-h-[350px] overflow-y-auto">
