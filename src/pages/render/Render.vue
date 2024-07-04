@@ -28,8 +28,8 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref } from "vue";
-import { useRouter } from "vue-router";
+import { onMounted, onUnmounted, ref, watch } from "vue";
+import { useRoute, useRouter } from "vue-router";
 import type { MusicRecord } from "@/records/music.record";
 import { musicRepository } from "@/services/music.repository";
 import type { RenderLineModel } from "@/models/render-line.model";
@@ -45,6 +45,7 @@ import { fullscreenService } from "@/services/fullscreen.service";
 
 const id = ref<string>("");
 const router = useRouter();
+const route = useRoute();
 const music = ref<MusicRecord>({} as MusicRecord);
 const renderLines = ref<RenderLineModel[]>([]);
 const firstLine = ref<string>("");
@@ -77,7 +78,7 @@ const listenTranspose = () => {
 }
 
 const loadMusic = () => {
-  id.value = router.currentRoute.value.params.id?.toString() ?? "";
+  id.value = route.params.id?.toString() ?? "";
   if (!id.value) return backToPreviusPage();
   music.value = musicRepository.getById(id.value) as MusicRecord;
   if (!music.value) return backToPreviusPage();
@@ -172,4 +173,10 @@ onUnmounted(() => {
   onDestroyed$.next();
   onDestroyed$.complete();
 })
+
+watch(() => route.params.id, (newId) => {
+  if (!(newId && newId !== id.value)) return;
+  loadMusic();
+  scrollToTop();
+});
 </script>
