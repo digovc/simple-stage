@@ -13,15 +13,9 @@
       </div>
     </div>
     <div class="fixed top-6 md:top-2 right-4 py-2 flex justify-end space-x-2 opacity-80">
-      <SecundaryButton @click="showMenu">
-        Menu
-      </SecundaryButton>
-      <SecundaryButton @click="requestFullscreen">
-        Fullscreen
-      </SecundaryButton>
-      <SecundaryButton @click="backToPreviusPage">
-        Close
-      </SecundaryButton>
+      <IconButton @click="showMenu" :icon="faBars"/>
+      <IconButton @click="requestFullscreen" :icon="faExpand"/>
+      <IconButton @click="backToPreviusPage" :icon="faTimes"/>
     </div>
     <RenderMenuDialog ref="renderMenuDialogRef"/>
   </div>
@@ -35,13 +29,14 @@ import { musicRepository } from "@/services/music.repository";
 import type { RenderLineModel } from "@/models/render-line.model";
 import ChordsRender from "@/pages/render/components/ChordsRender.vue";
 import PhraseRender from "@/pages/render/components/PhraseRender.vue";
-import SecundaryButton from "@/components/SecundaryButton.vue";
+import IconButton from "@/components/IconButton.vue";
 import { transposeService } from "@/services/transpose.service";
 import { Subject, takeUntil } from "rxjs";
 import * as ChordTransposer from 'chord-transposer';
 import ParagraphRender from "@/pages/render/components/ParagraphRender.vue";
 import RenderMenuDialog from "@/pages/render/components/RenderMenuDialog.vue";
 import { fullscreenService } from "@/services/fullscreen.service";
+import { faBars, faExpand, faTimes } from '@fortawesome/free-solid-svg-icons';
 
 const id = ref<string>("");
 const router = useRouter();

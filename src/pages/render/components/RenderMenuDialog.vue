@@ -5,22 +5,11 @@
         <div class="text-2xl">
           Options
         </div>
-        <div class="text-center space-x-2">
-          <PrimaryButton @click="edit">
-            Edit
-          </PrimaryButton>
-          <PrimaryButton @click="openTranspose">
-            Transpose
-          </PrimaryButton>
-          <PrimaryButton @click="openPlaylistRelation">
-            Playlists
-          </PrimaryButton>
-          <PrimaryButton v-if="previousMusicId" @click="openSong(previousMusicId)">
-            Previous
-          </PrimaryButton>
-          <PrimaryButton v-if="nextMusicId" @click="openSong(nextMusicId)">
-            Next
-          </PrimaryButton>
+        <div class="text-center space-x-2 flex justify-between">
+          <IconButton :icon="faEdit" @click="edit"/>
+          <IconButton :icon="faMusic" @click="openTranspose"/>
+          <IconButton v-if="previousMusicId" :icon="faChevronLeft" @click="openSong(previousMusicId)"/>
+          <IconButton v-if="nextMusicId" :icon="faChevronRight" @click="openSong(nextMusicId)"/>
         </div>
       </div>
     </Dialog>
@@ -34,10 +23,11 @@
 import { onMounted, ref, watch } from "vue";
 import Transpose from "@/dialogs/transpose/Transpose.vue";
 import PlaylistRelation from "@/dialogs/playlist-relation/PlaylistRelation.vue";
-import { useRouter, useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { playlistRepository } from "@/services/playlist.repository";
-import PrimaryButton from "@/components/PrimaryButton.vue";
+import IconButton from "@/components/IconButton.vue";
 import Dialog from "@/components/Dialog.vue";
+import { faChevronLeft, faChevronRight, faEdit, faMusic } from '@fortawesome/free-solid-svg-icons';
 
 const isVisible = ref<boolean>(false);
 const playlistRelationRef = ref<HTMLElement>() as any;
@@ -49,7 +39,7 @@ const previousMusicId = ref<string>("");
 
 const edit = () => {
   const id = route.params.id?.toString() ?? "";
-  router.push(`/editor/${id}`);
+  router.push(`/editor/${ id }`);
 };
 
 const loadNextAndPrevious = () => {
@@ -86,7 +76,7 @@ const openPlaylistRelation = () => {
 const openSong = (id: string) => {
   if (!id) return;
   isVisible.value = false;
-  const url = `/render/${id}`;
+  const url = `/render/${ id }`;
   const query = route.query;
   router.replace({ path: url, query });
 };

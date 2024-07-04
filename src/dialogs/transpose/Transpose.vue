@@ -6,16 +6,10 @@
           Transpose
         </div>
         <div class="flex justify-between space-x-4">
-          <PrimaryButton @click="changeTranspose(false)">
-            <div class="w-8 text-center">
-              -
-            </div>
-          </PrimaryButton>
-          <PrimaryButton @click="changeTranspose(true)">
-            <div class="w-8 text-center">
-              +
-            </div>
-          </PrimaryButton>
+          <IconButton @click="changeTranspose(false)" :icon="faMinus">
+          </IconButton>
+          <IconButton @click="changeTranspose(true)" :icon="faPlus">
+          </IconButton>
         </div>
       </div>
     </Dialog>
@@ -26,7 +20,8 @@
 import Dialog from "@/components/Dialog.vue";
 import { ref } from "vue";
 import { transposeService } from "@/services/transpose.service";
-import PrimaryButton from "@/components/PrimaryButton.vue";
+import IconButton from "@/components/IconButton.vue";
+import { faMinus, faPlus } from '@fortawesome/free-solid-svg-icons';
 
 const isVisible = ref<boolean>(false);
 

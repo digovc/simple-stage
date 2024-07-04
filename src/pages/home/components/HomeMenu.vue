@@ -7,15 +7,9 @@
       <PrimaryButton @click="isPlaylistDialogOpen = true">
         + Playlist
       </PrimaryButton>
-      <SecundaryButton @click="exportAllData">
-        Export
-      </SecundaryButton>
-      <SecundaryButton @click="importAllData">
-        Import
-      </SecundaryButton>
-      <SecundaryButton @click="requestFullscreen">
-        Fullscreen
-      </SecundaryButton>
+      <IconButton :icon="faArrowUp" @click="exportAllData"/>
+      <IconButton :icon="faArrowDown" @click="importAllData"/>
+      <IconButton :icon="faExpand" @click="requestFullscreen"/>
     </div>
 
     <div>
@@ -29,8 +23,9 @@ import PrimaryButton from "@/components/PrimaryButton.vue";
 import { useRouter } from "vue-router";
 import PlaylistForm from "@/dialogs/playlist/PlaylistForm.vue";
 import { ref } from "vue";
-import SecundaryButton from "@/components/SecundaryButton.vue";
 import { fullscreenService } from "@/services/fullscreen.service";
+import IconButton from "@/components/IconButton.vue";
+import { faArrowDown, faArrowUp, faExpand } from "@fortawesome/free-solid-svg-icons";
 
 const router = useRouter()
 const isPlaylistDialogOpen = ref(false)
