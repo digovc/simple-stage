@@ -6,15 +6,17 @@
       </div>
       <div class="pb-24 overflow-x-auto grow p-2">
         <template v-for="line in renderLines" :key="line.id">
-          <ParagraphRender v-if="line.type === 'paragraph'" :line="line"/>
-          <ChordsRender v-if="line.type === 'chords'" :line="line"/>
-          <PhraseRender v-if="line.type === 'phrase'" :line="line"/>
+          <ParagraphRender v-if="line.type === 'paragraph'" :line="line" :style="{ fontSize: `${chordsFontSize}px` }"/>
+          <ChordsRender v-if="line.type === 'chords'" :line="line" :style="{ fontSize: `${chordsFontSize}px` }"/>
+          <PhraseRender v-if="line.type === 'phrase'" :line="line" :style="{ fontSize: `${chordsFontSize}px` }"/>
         </template>
       </div>
     </div>
     <div class="fixed top-6 md:top-2 right-4 py-2 flex justify-end space-x-2 opacity-80">
       <IconButton :isDisabled="!previousMusicId" @click="openSong(previousMusicId)" :icon="faChevronLeft"/>
       <IconButton :isDisabled="!nextMusicId" @click="openSong(nextMusicId)" :icon="faChevronRight"/>
+      <IconButton @click="increaseFontSize" :icon="faPlus"/>
+      <IconButton @click="decreaseFontSize" :icon="faMinus"/>
       <IconButton @click="edit" :icon="faPen"/>
       <IconButton @click="openTranspose" :icon="faMusic"/>
       <IconButton @click="requestFullscreen" :icon="faExpand"/>
@@ -39,7 +41,16 @@ import * as ChordTransposer from 'chord-transposer';
 import ParagraphRender from "@/pages/render/components/ParagraphRender.vue";
 import Transpose from "@/dialogs/transpose/Transpose.vue";
 import { fullscreenService } from "@/services/fullscreen.service";
-import { faChevronLeft, faChevronRight, faExpand, faMusic, faPen, faTimes } from '@fortawesome/free-solid-svg-icons';
+import {
+  faChevronLeft,
+  faChevronRight,
+  faExpand,
+  faMinus,
+  faMusic,
+  faPen,
+  faPlus,
+  faTimes
+} from '@fortawesome/free-solid-svg-icons';
 import { playlistRepository } from "@/services/playlist.repository";
 
 const id = ref<string>("");
@@ -53,6 +64,7 @@ const onDestroyed$ = new Subject<void>();
 const divContainerRef = ref<HTMLElement>() as any;
 const nextMusicId = ref<string>("");
 const previousMusicId = ref<string>("");
+const chordsFontSize = ref<number>(16);
 
 const backToPreviusPage = () => {
   router.back()
@@ -200,6 +212,14 @@ const openSong = (id: string) => {
   const url = `/render/${ id }`;
   const query = route.query;
   router.replace({ path: url, query });
+};
+
+const increaseFontSize = () => {
+  chordsFontSize.value = Math.min(chordsFontSize.value + 2, 32);
+};
+
+const decreaseFontSize = () => {
+  chordsFontSize.value = Math.max(chordsFontSize.value - 2, 12);
 };
 
 onMounted(() => {
