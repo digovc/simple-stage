@@ -13,11 +13,14 @@
       </div>
     </div>
     <div class="fixed top-6 md:top-2 right-4 py-2 flex justify-end space-x-2 opacity-80">
-      <IconButton @click="showMenu" :icon="faBars"/>
+      <IconButton @click="edit" :icon="faPen"/>
+      <IconButton @click="openTranspose" :icon="faMusic"/>
+      <IconButton v-if="previousMusicId" @click="openSong(previousMusicId)" :icon="faChevronLeft"/>
+      <IconButton v-if="nextMusicId" @click="openSong(nextMusicId)" :icon="faChevronRight"/>
       <IconButton @click="requestFullscreen" :icon="faExpand"/>
       <IconButton @click="backToPreviusPage" :icon="faTimes"/>
     </div>
-    <RenderMenuDialog ref="renderMenuDialogRef"/>
+    <Transpose ref="transposeRef"/>
   </div>
 </template>
 
@@ -34,9 +37,10 @@ import { transposeService } from "@/services/transpose.service";
 import { Subject, takeUntil } from "rxjs";
 import * as ChordTransposer from 'chord-transposer';
 import ParagraphRender from "@/pages/render/components/ParagraphRender.vue";
-import RenderMenuDialog from "@/pages/render/components/RenderMenuDialog.vue";
+import Transpose from "@/dialogs/transpose/Transpose.vue";
 import { fullscreenService } from "@/services/fullscreen.service";
-import { faBars, faExpand, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faChevronLeft, faChevronRight, faExpand, faMusic, faPen, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { playlistRepository } from "@/services/playlist.repository";
 
 const id = ref<string>("");
 const router = useRouter();
@@ -44,9 +48,11 @@ const route = useRoute();
 const music = ref<MusicRecord>({} as MusicRecord);
 const renderLines = ref<RenderLineModel[]>([]);
 const firstLine = ref<string>("");
-const renderMenuDialogRef = ref<HTMLElement>() as any;
+const transposeRef = ref<HTMLElement>() as any;
 const onDestroyed$ = new Subject<void>();
 const divContainerRef = ref<HTMLElement>() as any;
+const nextMusicId = ref<string>("");
+const previousMusicId = ref<string>("");
 
 const backToPreviusPage = () => {
   router.back()
@@ -122,10 +128,6 @@ const scrollToTop = () => {
   divContainerRef.value?.scrollTo(0, 0);
 };
 
-const showMenu = () => {
-  renderMenuDialogRef.value?.show();
-};
-
 const transposeChords = (isUp: boolean) => {
   for (const line of renderLines.value ?? []) {
     if (line.type !== 'chords') continue;
@@ -158,10 +160,53 @@ const transposeLineByNumber = (line: string, transpose: number) => {
   }
 }
 
+const loadNextAndPrevious = () => {
+  const playlistId = route.query.playlistId?.toString();
+  if (!playlistId) return;
+  const playlist = playlistRepository.getById(playlistId);
+  if (!playlist) return;
+  playlist.musicIds = playlist.musicIds ?? [];
+  const musicId = route.params.id?.toString() ?? "";
+  const index = playlist.musicIds.indexOf(musicId);
+  if (index === -1) return;
+  const nextIndex = index + 1;
+
+  if (nextIndex < playlist.musicIds.length) {
+    nextMusicId.value = playlist.musicIds[nextIndex];
+  } else {
+    nextMusicId.value = "";
+  }
+
+  const previousIndex = index - 1;
+
+  if (previousIndex >= 0) {
+    previousMusicId.value = playlist.musicIds[previousIndex];
+  } else {
+    previousMusicId.value = "";
+  }
+};
+
+const edit = () => {
+  const id = route.params.id?.toString() ?? "";
+  router.push(`/editor/${ id }`);
+};
+
+const openTranspose = () => {
+  transposeRef.value?.show();
+};
+
+const openSong = (id: string) => {
+  if (!id) return;
+  const url = `/render/${ id }`;
+  const query = route.query;
+  router.replace({ path: url, query });
+};
+
 onMounted(() => {
   loadMusic();
   listenTranspose();
   scrollToTop();
+  loadNextAndPrevious();
 })
 
 onUnmounted(() => {
@@ -173,5 +218,6 @@ watch(() => route.params.id, (newId) => {
   if (!(newId && newId !== id.value)) return;
   loadMusic();
   scrollToTop();
+  loadNextAndPrevious();
 });
 </script>
