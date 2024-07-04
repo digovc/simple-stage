@@ -84,7 +84,6 @@ const openSong = (id: string) => {
   const url = `/render/${ id }`;
   const query = router.currentRoute.value.query;
   router.replace({ path: url, query });
-  setTimeout(()=>location.reload());
 };
 
 const openTranspose = () => {
