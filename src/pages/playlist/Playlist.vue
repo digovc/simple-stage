@@ -12,7 +12,7 @@
     <div class="grow overflow-y-auto p-2 pb-48">
       <draggable class="space-y-2" :list="musics" @change="saveNewOrder">
         <div v-for="music in musics" :key="music.id"
-             class="border p-1 px-2 rounded cursor-pointer flex hover:shadow">
+             class="border p-4 rounded cursor-pointer flex hover:shadow">
           <div class="flex w-full space-x-2 whitespace-nowrap overflow-x-hidden">
             <input type="checkbox" v-model="(music as any).isSelected"
                    @change="refreshMusicSelected(music.id, (music as any).isSelected)"/>

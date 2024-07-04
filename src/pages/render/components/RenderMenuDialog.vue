@@ -6,7 +6,7 @@
           Options
         </div>
         <div class="text-center space-x-2 flex justify-between">
-          <IconButton :icon="faEdit" @click="edit"/>
+          <IconButton :icon="faPen" @click="edit"/>
           <IconButton :icon="faMusic" @click="openTranspose"/>
           <IconButton v-if="previousMusicId" :icon="faChevronLeft" @click="openSong(previousMusicId)"/>
           <IconButton v-if="nextMusicId" :icon="faChevronRight" @click="openSong(nextMusicId)"/>
@@ -27,7 +27,7 @@ import { useRoute, useRouter } from "vue-router";
 import { playlistRepository } from "@/services/playlist.repository";
 import IconButton from "@/components/IconButton.vue";
 import Dialog from "@/components/Dialog.vue";
-import { faChevronLeft, faChevronRight, faEdit, faMusic } from '@fortawesome/free-solid-svg-icons';
+import { faChevronLeft, faChevronRight, faMusic, faPen } from '@fortawesome/free-solid-svg-icons';
 
 const isVisible = ref<boolean>(false);
 const playlistRelationRef = ref<HTMLElement>() as any;
