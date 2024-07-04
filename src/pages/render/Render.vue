@@ -1,5 +1,11 @@
 <template>
-  <div ref="divContainerRef" class="h-full font-mono relative">
+  <div
+      ref="divContainerRef"
+      class="h-full font-mono relative"
+      @touchstart="handleTouchStart"
+      @touchmove="handleTouchMove"
+      @touchend="handleTouchEnd"
+  >
     <div class="h-full flex flex-col">
       <div class="font-semibold p-2">
         {{ firstLine }}
@@ -53,18 +59,21 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { playlistRepository } from "@/services/playlist.repository";
 
-const id = ref<string>("");
-const router = useRouter();
-const route = useRoute();
-const music = ref<MusicRecord>({} as MusicRecord);
-const renderLines = ref<RenderLineModel[]>([]);
-const firstLine = ref<string>("");
-const transposeRef = ref<HTMLElement>() as any;
-const onDestroyed$ = new Subject<void>();
-const divContainerRef = ref<HTMLElement>() as any;
-const nextMusicId = ref<string>("");
-const previousMusicId = ref<string>("");
 const chordsFontSize = ref<number>(16);
+const divContainerRef = ref<HTMLElement>() as any;
+const firstLine = ref<string>("");
+const id = ref<string>("");
+const minSwipeDistance = 50;
+const music = ref<MusicRecord>({} as MusicRecord);
+const nextMusicId = ref<string>("");
+const onDestroyed$ = new Subject<void>();
+const previousMusicId = ref<string>("");
+const renderLines = ref<RenderLineModel[]>([]);
+const route = useRoute();
+const router = useRouter();
+const touchEndX = ref<number | null>(null);
+const touchStartX = ref<number | null>(null);
+const transposeRef = ref<HTMLElement>() as any;
 
 const backToPreviusPage = () => {
   router.back()
@@ -220,6 +229,30 @@ const increaseFontSize = () => {
 
 const decreaseFontSize = () => {
   chordsFontSize.value = Math.max(chordsFontSize.value - 2, 12);
+};
+
+const handleTouchStart = (e: TouchEvent) => {
+  touchStartX.value = e.touches[0].clientX;
+};
+
+const handleTouchMove = (e: TouchEvent) => {
+  touchEndX.value = e.touches[0].clientX;
+};
+
+const handleTouchEnd = () => {
+  if (!touchStartX.value || !touchEndX.value) return;
+
+  const distance = touchEndX.value - touchStartX.value;
+  if (Math.abs(distance) < minSwipeDistance) return;
+
+  if (distance > 0 && previousMusicId.value) {
+    openSong(previousMusicId.value);
+  } else if (distance < 0 && nextMusicId.value) {
+    openSong(nextMusicId.value);
+  }
+
+  touchStartX.value = null;
+  touchEndX.value = null;
 };
 
 onMounted(() => {
