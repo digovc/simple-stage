@@ -1,6 +1,7 @@
 <template>
-  <DefaultButton>
-    <div class="py-2 px-3 rounded hover:bg-gray-700 border border-gray-300">
+  <DefaultButton :disabled="isDisabled">
+    <div class="py-2 px-3 rounded hover:bg-gray-700 border border-gray-300"
+         :class="{ 'opacity-50 cursor-not-allowed': isDisabled }">
       <FontAwesomeIcon :icon="icon"/>
     </div>
   </DefaultButton>
@@ -16,6 +17,10 @@ defineProps({
   icon: {
     type: Object as PropType<IconDefinition>,
     required: true,
+  },
+  isDisabled: {
+    type: Boolean,
+    default: false,
   },
 });
 </script>

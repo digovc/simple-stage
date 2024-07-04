@@ -13,10 +13,10 @@
       </div>
     </div>
     <div class="fixed top-6 md:top-2 right-4 py-2 flex justify-end space-x-2 opacity-80">
+      <IconButton :isDisabled="!previousMusicId" @click="openSong(previousMusicId)" :icon="faChevronLeft"/>
+      <IconButton :isDisabled="!nextMusicId" @click="openSong(nextMusicId)" :icon="faChevronRight"/>
       <IconButton @click="edit" :icon="faPen"/>
       <IconButton @click="openTranspose" :icon="faMusic"/>
-      <IconButton v-if="previousMusicId" @click="openSong(previousMusicId)" :icon="faChevronLeft"/>
-      <IconButton v-if="nextMusicId" @click="openSong(nextMusicId)" :icon="faChevronRight"/>
       <IconButton @click="requestFullscreen" :icon="faExpand"/>
       <IconButton @click="backToPreviusPage" :icon="faTimes"/>
     </div>
