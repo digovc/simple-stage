@@ -10,19 +10,19 @@
       Songs
     </div>
     <div class="grow overflow-y-auto p-2 pb-48">
-      <draggable class="space-y-2" :list="musics" @change="saveNewOrder">
+      <draggable class="space-y-2" :list="musics" @change="saveNewOrder" handle=".handle">
         <div v-for="music in musics" :key="music.id"
-             class="border p-4 rounded cursor-pointer flex hover:shadow">
+             class="border p-4 rounded flex hover:shadow bg-gray-600">
           <div class="flex items-center w-full space-x-4 whitespace-nowrap overflow-x-hidden">
             <input type="checkbox" v-model="(music as any).isSelected"
                    @change="refreshMusicSelected(music.id, (music as any).isSelected)"/>
-            <div class="grow" @click="renderMusic(music)">
+            <div class="grow cursor-pointer" @click="renderMusic(music)">
               {{ music.title }}
             </div>
-            <div class="text-sm text-gray-600" @click="renderMusic(music)">
+            <div class="text-sm text-gray-600 cursor-pointer" @click="renderMusic(music)">
               {{ music.artist }}
             </div>
-            <FontAwesomeIcon :icon="faGripLines" class="text-gray-400 cursor-move text-2xl"/>
+            <FontAwesomeIcon :icon="faGripLines" class="text-gray-400 cursor-move text-2xl handle"/>
           </div>
         </div>
       </draggable>
