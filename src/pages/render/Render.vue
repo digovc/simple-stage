@@ -101,6 +101,7 @@ const loadMusic = () => {
   if (!id.value) return backToPreviusPage();
   music.value = musicRepository.getById(id.value) as MusicRecord;
   if (!music.value) return backToPreviusPage();
+  chordsFontSize.value = music.value.fontSize ?? 16;
   render(music.value)
 };
 
@@ -222,10 +223,17 @@ const openSong = (id: string) => {
 
 const increaseFontSize = () => {
   chordsFontSize.value = Math.min(chordsFontSize.value + 2, 32);
+  saveFontSize();
 };
 
 const decreaseFontSize = () => {
   chordsFontSize.value = Math.max(chordsFontSize.value - 2, 12);
+  saveFontSize();
+};
+
+const saveFontSize = () => {
+  music.value.fontSize = chordsFontSize.value;
+  musicRepository.save(music.value);
 };
 
 const handleTouchStart = (e: TouchEvent) => {
