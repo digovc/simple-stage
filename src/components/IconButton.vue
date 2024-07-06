@@ -1,6 +1,6 @@
 <template>
   <DefaultButton :disabled="isDisabled">
-    <div class="py-2 px-3 rounded hover:bg-gray-700 border border-gray-300"
+    <div class="w-9 h-9 flex justify-center items-center rounded hover:bg-gray-700 border border-gray-300"
          :class="{ 'opacity-50 cursor-not-allowed': isDisabled }">
       <FontAwesomeIcon :icon="icon"/>
     </div>

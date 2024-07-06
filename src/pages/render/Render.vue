@@ -13,7 +13,7 @@
         </template>
       </div>
     </div>
-    <div class="fixed top-6 md:top-2 right-4 py-2 flex justify-end space-x-2 opacity-80">
+    <div class="fixed top-2 right-4 py-2 flex flex-col justify-end space-y-2 opacity-80">
       <IconButton :isDisabled="!previousMusicId" @click="openSong(previousMusicId)" :icon="faChevronLeft"/>
       <IconButton :isDisabled="!nextMusicId" @click="openSong(nextMusicId)" :icon="faChevronRight"/>
       <IconButton @click="decreaseFontSize" :icon="faMinus"/>
