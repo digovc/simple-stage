@@ -19,13 +19,13 @@
 </template>
 
 <script setup lang="ts">
-import PrimaryButton from "@/components/PrimaryButton.vue";
-import { useRouter } from "vue-router";
-import PlaylistForm from "@/dialogs/playlist/PlaylistForm.vue";
-import { ref } from "vue";
-import { fullscreenService } from "@/services/fullscreen.service";
 import IconButton from "@/components/IconButton.vue";
+import PlaylistForm from "@/dialogs/playlist/PlaylistForm.vue";
+import PrimaryButton from "@/components/PrimaryButton.vue";
 import { faArrowDown, faArrowUp, faExpand } from "@fortawesome/free-solid-svg-icons";
+import { fullscreenService } from "@/services/fullscreen.service";
+import { ref } from "vue";
+import { useRouter } from "vue-router";
 
 const router = useRouter()
 const isPlaylistDialogOpen = ref(false)

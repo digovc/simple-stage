@@ -45,5 +45,6 @@ const createPlaylist = () => {
 
   playlistRepository.save(playlist)
   emits("onClose")
+  window.location.reload()
 }
 </script>
