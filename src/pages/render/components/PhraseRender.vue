@@ -19,6 +19,6 @@ defineProps({
 const lineDivRef = ref<HTMLElement>() as any;
 
 const scrollDownToLine = () => {
-  lineDivRef.value.scrollIntoView({ behavior: "smooth" });
+  // lineDivRef.value.scrollIntoView({ behavior: "smooth" });
 }
 </script>

@@ -1,6 +1,9 @@
 <template>
-  <div ref="paragraphDivRef" class="font-semibold whitespace-pre mt-4" @click="scrollDown">
-    {{ line.text?.trim() }}
+  <div>
+    <div class="h-px border border-dashed border-gray-400 mr-16 mt-4"></div>
+    <div ref="paragraphDivRef" class="font-semibold whitespace-pre" @click="scrollDown">
+      {{ line.text?.trim() }}
+    </div>
   </div>
 </template>
 <script setup lang="ts">

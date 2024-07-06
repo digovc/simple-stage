@@ -2,10 +2,10 @@
   <div ref="divContainerRef" class="h-full font-mono relative" @touchstart="handleTouchStart"
        @touchmove="handleTouchMove" @touchend="handleTouchEnd">
     <div class="h-full flex flex-col">
-      <div class="font-semibold p-2">
+      <div class="font-semibold p-2 pb-0">
         {{ firstLine }}
       </div>
-      <div class="pb-24 overflow-x-auto grow p-2">
+      <div class="pb-24 overflow-x-auto grow px-2 touch-pinch-zoom">
         <template v-for="line in renderLines" :key="line.id">
           <ParagraphRender v-if="line.type === 'paragraph'" :line="line" :style="{ fontSize: `${chordsFontSize}px` }"/>
           <ChordsRender v-if="line.type === 'chords'" :line="line" :style="{ fontSize: `${chordsFontSize}px` }"/>
@@ -13,11 +13,11 @@
         </template>
       </div>
     </div>
-    <div class="fixed top-2 right-4 py-2 flex flex-col justify-end space-y-2 opacity-80">
+    <div class="fixed bottom-2 right-4 py-2 flex flex-col justify-end space-y-2 opacity-80">
       <IconButton :isDisabled="!previousMusicId" @click="openSong(previousMusicId)" :icon="faChevronLeft"/>
       <IconButton :isDisabled="!nextMusicId" @click="openSong(nextMusicId)" :icon="faChevronRight"/>
-      <IconButton @click="decreaseFontSize" :icon="faMinus"/>
       <IconButton @click="increaseFontSize" :icon="faPlus"/>
+      <IconButton @click="decreaseFontSize" :icon="faMinus"/>
       <IconButton @click="openTranspose" :icon="faMusic"/>
       <IconButton @click="edit" :icon="faPen"/>
       <IconButton @click="requestFullscreen" :icon="faExpand"/>
