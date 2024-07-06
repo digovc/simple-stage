@@ -1,11 +1,6 @@
 <template>
-  <div
-      ref="divContainerRef"
-      class="h-full font-mono relative"
-      @touchstart="handleTouchStart"
-      @touchmove="handleTouchMove"
-      @touchend="handleTouchEnd"
-  >
+  <div ref="divContainerRef" class="h-full font-mono relative" @touchstart="handleTouchStart"
+       @touchmove="handleTouchMove" @touchend="handleTouchEnd">
     <div class="h-full flex flex-col">
       <div class="font-semibold p-2">
         {{ firstLine }}
