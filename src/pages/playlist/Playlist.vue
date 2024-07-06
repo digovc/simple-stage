@@ -51,8 +51,10 @@ const loadMusics = () => {
   for (const musicId of playlist.value.musicIds) {
     if (!musicId) continue;
     const music = musicRepository.getById(musicId);
-    (music as any).isSelected = playlist.value.selectedMusicIds?.includes(musicId) ?? false;
-    if (music) musics.value.push(music);
+    if (music) {
+      (music as any).isSelected = playlist.value.selectedMusicIds?.includes(musicId) ?? false;
+      musics.value.push(music);
+    }
   }
 };
 

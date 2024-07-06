@@ -12,7 +12,7 @@
         <div class="max-h-[350px] overflow-y-auto">
           <template v-for="music in musics" :key="music.id">
             <div v-if="!(music as any).isHidden">
-              <div class="cursor-pointer select-none" @click="(music as any).isSelected = !(music as any).isSelected">
+              <div class="cursor-pointer select-none" @click="toggleMusicSelection(music)">
                 <div class="flex space-x-2 place-items-center">
                   <input type="checkbox" v-model="(music as any).isSelected" ref="checkboxRef"/>
                   <div class="whitespace-nowrap text-sm">
@@ -51,6 +51,7 @@ const emits = defineEmits(["onClose", "onSave"]);
 const router = useRouter();
 const checkboxRef = ref<HTMLInputElement>();
 const search = ref("");
+const newlySelectedMusicIds = ref<string[]>([]);
 
 const filterMusics = () => {
   const query = search.value?.trim().toLowerCase();
@@ -79,17 +80,34 @@ const loadSelectedMusics = () => {
   }
 }
 
+const toggleMusicSelection = (music: MusicRecord) => {
+  (music as any).isSelected = !(music as any).isSelected;
+  if ((music as any).isSelected) {
+    if (!newlySelectedMusicIds.value.includes(music.id)) {
+      newlySelectedMusicIds.value.push(music.id);
+    }
+  } else {
+    const index = newlySelectedMusicIds.value.indexOf(music.id);
+    if (index > -1) {
+      newlySelectedMusicIds.value.splice(index, 1);
+    }
+  }
+}
+
 const save = () => {
   const playlist = getPlaylist();
   if (!playlist) return;
 
-  for (const music of musics.value ?? []) {
-    if ((music as any).isSelected && !playlist.musicIds.includes(music.id)) {
-      playlist.musicIds.push(music.id);
-    } else if (!(music as any).isSelected && playlist.musicIds.includes(music.id)) {
-      playlist.musicIds = playlist.musicIds.filter(id => id !== music.id);
+  for (const musicId of newlySelectedMusicIds.value) {
+    if (!playlist.musicIds.includes(musicId)) {
+      playlist.musicIds.push(musicId);
     }
   }
+
+  playlist.musicIds = playlist.musicIds.filter(id => {
+    const music = musics.value.find(m => m.id === id);
+    return music && (music as any).isSelected;
+  });
 
   playlistRepository.save(playlist)
   emits("onSave");
@@ -102,4 +120,3 @@ onMounted(async () => {
   loadSelectedMusics();
 })
 </script>
-
