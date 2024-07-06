@@ -13,15 +13,16 @@
       <draggable class="space-y-2" :list="musics" @change="saveNewOrder">
         <div v-for="music in musics" :key="music.id"
              class="border p-4 rounded cursor-pointer flex hover:shadow">
-          <div class="flex w-full space-x-4 whitespace-nowrap overflow-x-hidden">
+          <div class="flex items-center w-full space-x-4 whitespace-nowrap overflow-x-hidden">
             <input type="checkbox" v-model="(music as any).isSelected"
                    @change="refreshMusicSelected(music.id, (music as any).isSelected)"/>
             <div class="grow" @click="renderMusic(music)">
               {{ music.title }}
             </div>
-            <div class="text-sm pt-1 text-gray-600" @click="renderMusic(music)">
+            <div class="text-sm text-gray-600" @click="renderMusic(music)">
               {{ music.artist }}
             </div>
+            <FontAwesomeIcon :icon="faGripLines" class="text-gray-400 cursor-move text-2xl"/>
           </div>
         </div>
       </draggable>
@@ -37,6 +38,8 @@ import type { MusicRecord } from "@/records/music.record";
 import { musicRepository } from "@/services/music.repository";
 import PlaylistMenu from "@/pages/playlist/components/PlaylistMenu.vue";
 import { VueDraggableNext as draggable } from 'vue-draggable-next'
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import { faGripLines } from "@fortawesome/free-solid-svg-icons";
 
 const playlist = ref<PlaylistRecord | null>(null);
 const router = useRouter();
