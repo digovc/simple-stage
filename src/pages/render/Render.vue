@@ -206,7 +206,7 @@ const loadNextAndPrevious = () => {
 
 const edit = () => {
   const id = route.params.id?.toString() ?? "";
-  router.push(`/editor/${id}`);
+  router.push(`/editor/${ id }`);
 };
 
 const openTranspose = () => {
@@ -215,7 +215,7 @@ const openTranspose = () => {
 
 const openSong = (id: string) => {
   if (!id) return;
-  const url = `/render/${id}`;
+  const url = `/render/${ id }`;
   const query = route.query;
   router.replace({ path: url, query });
 };
@@ -246,10 +246,8 @@ const handleTouchEnd = () => {
   const horizontalDistance = Math.abs(deltaX);
   const verticalDistance = Math.abs(deltaY);
 
-  // Verifica se o movimento é majoritariamente horizontal
   const isHorizontalSwipe = horizontalDistance > verticalDistance;
 
-  // Verifica se o movimento percorre pelo menos meia tela
   const isLongEnoughSwipe = horizontalDistance > windowWidth.value / 2;
 
   if (isHorizontalSwipe && isLongEnoughSwipe) {
