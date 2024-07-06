@@ -16,10 +16,10 @@
     <div class="fixed top-6 md:top-2 right-4 py-2 flex justify-end space-x-2 opacity-80">
       <IconButton :isDisabled="!previousMusicId" @click="openSong(previousMusicId)" :icon="faChevronLeft"/>
       <IconButton :isDisabled="!nextMusicId" @click="openSong(nextMusicId)" :icon="faChevronRight"/>
-      <IconButton @click="increaseFontSize" :icon="faPlus"/>
       <IconButton @click="decreaseFontSize" :icon="faMinus"/>
-      <IconButton @click="edit" :icon="faPen"/>
+      <IconButton @click="increaseFontSize" :icon="faPlus"/>
       <IconButton @click="openTranspose" :icon="faMusic"/>
+      <IconButton @click="edit" :icon="faPen"/>
       <IconButton @click="requestFullscreen" :icon="faExpand"/>
       <IconButton @click="backToPreviusPage" :icon="faTimes"/>
     </div>
