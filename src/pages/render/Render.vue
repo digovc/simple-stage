@@ -58,7 +58,6 @@ const chordsFontSize = ref<number>(16);
 const divContainerRef = ref<HTMLElement>() as any;
 const firstLine = ref<string>("");
 const id = ref<string>("");
-const minSwipeDistance = 50;
 const music = ref<MusicRecord>({} as MusicRecord);
 const nextMusicId = ref<string>("");
 const onDestroyed$ = new Subject<void>();
@@ -66,8 +65,11 @@ const previousMusicId = ref<string>("");
 const renderLines = ref<RenderLineModel[]>([]);
 const route = useRoute();
 const router = useRouter();
-const touchEndX = ref<number | null>(null);
 const touchStartX = ref<number | null>(null);
+const touchStartY = ref<number | null>(null);
+const touchEndX = ref<number | null>(null);
+const touchEndY = ref<number | null>(null);
+const windowWidth = ref(window.innerWidth);
 const transposeRef = ref<HTMLElement>() as any;
 
 const backToPreviusPage = () => {
@@ -204,7 +206,7 @@ const loadNextAndPrevious = () => {
 
 const edit = () => {
   const id = route.params.id?.toString() ?? "";
-  router.push(`/editor/${ id }`);
+  router.push(`/editor/${id}`);
 };
 
 const openTranspose = () => {
@@ -213,7 +215,7 @@ const openTranspose = () => {
 
 const openSong = (id: string) => {
   if (!id) return;
-  const url = `/render/${ id }`;
+  const url = `/render/${id}`;
   const query = route.query;
   router.replace({ path: url, query });
 };
@@ -228,26 +230,44 @@ const decreaseFontSize = () => {
 
 const handleTouchStart = (e: TouchEvent) => {
   touchStartX.value = e.touches[0].clientX;
+  touchStartY.value = e.touches[0].clientY;
 };
 
 const handleTouchMove = (e: TouchEvent) => {
   touchEndX.value = e.touches[0].clientX;
+  touchEndY.value = e.touches[0].clientY;
 };
 
 const handleTouchEnd = () => {
-  if (!touchStartX.value || !touchEndX.value) return;
+  if (!touchStartX.value || !touchEndX.value || !touchStartY.value || !touchEndY.value) return;
 
-  const distance = touchEndX.value - touchStartX.value;
-  if (Math.abs(distance) < minSwipeDistance) return;
+  const deltaX = touchEndX.value - touchStartX.value;
+  const deltaY = touchEndY.value - touchStartY.value;
+  const horizontalDistance = Math.abs(deltaX);
+  const verticalDistance = Math.abs(deltaY);
 
-  if (distance > 0 && previousMusicId.value) {
-    openSong(previousMusicId.value);
-  } else if (distance < 0 && nextMusicId.value) {
-    openSong(nextMusicId.value);
+  // Verifica se o movimento é majoritariamente horizontal
+  const isHorizontalSwipe = horizontalDistance > verticalDistance;
+
+  // Verifica se o movimento percorre pelo menos meia tela
+  const isLongEnoughSwipe = horizontalDistance > windowWidth.value / 2;
+
+  if (isHorizontalSwipe && isLongEnoughSwipe) {
+    if (deltaX > 0 && previousMusicId.value) {
+      openSong(previousMusicId.value);
+    } else if (deltaX < 0 && nextMusicId.value) {
+      openSong(nextMusicId.value);
+    }
   }
 
   touchStartX.value = null;
+  touchStartY.value = null;
   touchEndX.value = null;
+  touchEndY.value = null;
+};
+
+const updateWindowWidth = () => {
+  windowWidth.value = window.innerWidth;
 };
 
 onMounted(() => {
@@ -255,11 +275,13 @@ onMounted(() => {
   listenTranspose();
   scrollToTop();
   loadNextAndPrevious();
+  window.addEventListener('resize', updateWindowWidth);
 })
 
 onUnmounted(() => {
   onDestroyed$.next();
   onDestroyed$.complete();
+  window.removeEventListener('resize', updateWindowWidth);
 })
 
 watch(() => route.params.id, (newId) => {
