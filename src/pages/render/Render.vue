@@ -5,7 +5,7 @@
       <div class="font-semibold p-2 pb-0">
         {{ firstLine }}
       </div>
-      <div class="pb-24 overflow-x-auto grow px-2 touch-pinch-zoom">
+      <div class="pb-24 overflow-x-auto grow px-2">
         <template v-for="line in renderLines" :key="line.id">
           <ParagraphRender v-if="line.type === 'paragraph'" :line="line" :style="{ fontSize: `${chordsFontSize}px` }"/>
           <ChordsRender v-if="line.type === 'chords'" :line="line" :style="{ fontSize: `${chordsFontSize}px` }"/>
