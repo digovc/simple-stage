@@ -32,7 +32,8 @@ const exportAllData = () => {
   const data = JSON.stringify(localStorage);
   const blob = new Blob([data], { type: 'text/plain;charset=utf-8' });
   const a = document.createElement('a');
-  a.download = 'simple-stage-data.txt';
+  const date = new Date().toISOString().split('T')[0];
+  a.download = `simple-stage-data-${date}.txt`;
   a.href = URL.createObjectURL(blob);
   a.dataset.downloadurl = ['text/plain', a.download, a.href].join(':');
   a.style.display = 'none';
@@ -46,23 +47,25 @@ const exportAllData = () => {
 }
 
 const importAllData = () => {
-  const input = document.createElement('input')
-  input.type = 'file'
-  input.accept = 'text/plain'
-  input.onchange = () => {
-    const file = input.files?.[0]
-    if (!file) return
-    const reader = new FileReader()
-    reader.onload = () => {
-      const data = reader.result as string
-      const parsedData = JSON.parse(data)
-      Object.keys(parsedData).forEach(key => {
-        localStorage.setItem(key, parsedData[key])
-      })
-      window.location.reload()
+  if (confirm("Deseja realmente importar e sobrescrever os dados?")) {
+    const input = document.createElement('input')
+    input.type = 'file'
+    input.accept = 'text/plain'
+    input.onchange = () => {
+      const file = input.files?.[0]
+      if (!file) return
+      const reader = new FileReader()
+      reader.onload = () => {
+        const data = reader.result as string
+        const parsedData = JSON.parse(data)
+        Object.keys(parsedData).forEach(key => {
+          localStorage.setItem(key, parsedData[key])
+        })
+        window.location.reload()
+      }
+      reader.readAsText(file)
     }
-    reader.readAsText(file)
+    input.click()
   }
-  input.click()
 }
 </script>
