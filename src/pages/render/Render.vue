@@ -20,7 +20,6 @@
       <IconButton @click="decreaseFontSize" :icon="faMinus"/>
       <IconButton @click="openTranspose" :icon="faMusic"/>
       <IconButton @click="edit" :icon="faPen"/>
-      <IconButton @click="requestFullscreen" :icon="faExpand"/>
       <IconButton @click="backToPreviusPage" :icon="faTimes"/>
     </div>
     <Transpose ref="transposeRef"/>
@@ -41,11 +40,9 @@ import { Subject, takeUntil } from "rxjs";
 import * as ChordTransposer from 'chord-transposer';
 import ParagraphRender from "@/pages/render/components/ParagraphRender.vue";
 import Transpose from "@/dialogs/transpose/Transpose.vue";
-import { fullscreenService } from "@/services/fullscreen.service";
 import {
   faChevronLeft,
   faChevronRight,
-  faExpand,
   faMinus,
   faMusic,
   faPen,
@@ -137,10 +134,6 @@ const renderLine = (lines: RenderLineModel[], line: string, index: number) => {
   }
 
   lines.push({ id: index.toString(), text: text, type } as RenderLineModel);
-};
-
-const requestFullscreen = () => {
-  fullscreenService.requestFullscreen();
 };
 
 const scrollToTop = () => {

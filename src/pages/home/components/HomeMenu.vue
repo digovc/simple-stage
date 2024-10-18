@@ -7,9 +7,8 @@
       <PrimaryButton @click="isPlaylistDialogOpen = true">
         + Playlist
       </PrimaryButton>
-      <IconButton :icon="faArrowUp" @click="exportAllData"/>
-      <IconButton :icon="faArrowDown" @click="importAllData"/>
-      <IconButton :icon="faExpand" @click="requestFullscreen"/>
+      <IconButton :icon="faUpload" @click="exportAllData" title="Exportar"/>
+      <IconButton :icon="faDownload" @click="importAllData" title="Importar"/>
     </div>
 
     <div>
@@ -22,8 +21,7 @@
 import IconButton from "@/components/IconButton.vue";
 import PlaylistForm from "@/dialogs/playlist/PlaylistForm.vue";
 import PrimaryButton from "@/components/PrimaryButton.vue";
-import { faArrowDown, faArrowUp, faExpand } from "@fortawesome/free-solid-svg-icons";
-import { fullscreenService } from "@/services/fullscreen.service";
+import { faUpload, faDownload } from "@fortawesome/free-solid-svg-icons";
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 
@@ -66,9 +64,5 @@ const importAllData = () => {
     reader.readAsText(file)
   }
   input.click()
-}
-
-const requestFullscreen = async () => {
-  await fullscreenService.requestFullscreen()
 }
 </script>
