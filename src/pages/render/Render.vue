@@ -1,6 +1,5 @@
 <template>
-  <div ref="divContainerRef" class="h-full font-mono relative" @touchstart="handleTouchStart"
-       @touchmove="handleTouchMove" @touchend="handleTouchEnd">
+  <div ref="divContainerRef" class="h-full font-mono relative" @touchstart="handleTouchStart" @touchmove="handleTouchMove" @touchend="handleTouchEnd">
     <div class="h-full flex flex-col">
       <div class="font-semibold p-2 pb-0">
         {{ firstLine }}
@@ -74,14 +73,32 @@ const backToPreviusPage = () => {
 };
 
 const detectIsChords = (line: string) => {
-  const letterCount = line.length;
-  const spaceCount = line.split(" ").length - 1;
-  const isSpacePercentage = spaceCount / letterCount > 0.3;
-  const words = line.split(" ").filter((word) => word?.trim());
-  const isAllWordsChords = words.every((word) => word?.trim().match(/^[A-G].*$/));
-  return isSpacePercentage && isAllWordsChords;
-};
+  if (line.trim() === '') {
+    return false;
+  }
 
+  const trimmedLine = line.trim();
+  const tokens = trimmedLine.split(/\s+/);
+
+  if (tokens.length === 0) {
+    return false;
+  }
+
+  const baseNote = '[A-G]';
+  const accidental = '[#b]?';
+  const extensions = '[a-z0-9]*';
+  const coreChord = `${ baseNote }${ accidental }${ extensions }`;
+
+  const slashChordPattern = `${ coreChord }\\/${ baseNote }${ accidental }`;
+  const parenChordPattern = `\\(${ coreChord }\\)`;
+  const hyphenChordPattern = `${ coreChord }(-${ coreChord })+`;
+
+  const chordTokenRegex = new RegExp(
+      `^(${parenChordPattern}|${hyphenChordPattern}|${slashChordPattern}|${coreChord})$`
+  );
+
+  return tokens.every(token => chordTokenRegex.test(token));
+};
 const getContentLine = (lines: string[], index: number) => {
   if (index >= lines.length) return "";
   return lines[index];
