@@ -86,7 +86,7 @@ const detectIsChords = (line: string) => {
 
   const baseNote = '[A-G]';
   const accidental = '[#b]?';
-  const extensions = '[a-z0-9]*';
+  const extensions = '[a-z0-9\+]*';
   const coreChord = `${ baseNote }${ accidental }${ extensions }`;
 
   const slashChordPattern = `${ coreChord }\\/${ baseNote }${ accidental }`;
