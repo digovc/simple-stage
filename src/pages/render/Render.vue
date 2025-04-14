@@ -88,13 +88,12 @@ const detectIsChords = (line: string) => {
   const accidental = '[#b]?';
   const extensions = '[a-z0-9]*';
   const coreChord = `${ baseNote }${ accidental }${ extensions }`;
-  const specialChords = '[\+\-\(\)\/]';
 
   const slashChordPattern = `${ coreChord }\\/${ baseNote }${ accidental }`;
   const parenChordPattern = `\\(${ coreChord }\\)`;
   const hyphenChordPattern = `${ coreChord }(-${ coreChord })+`;
 
-  const chordTokenRegex = new RegExp(`^(${parenChordPattern}|${hyphenChordPattern}|${slashChordPattern}|${coreChord}|${specialChords})$`);
+  const chordTokenRegex = new RegExp(`^(${parenChordPattern}|${hyphenChordPattern}|${slashChordPattern}|${coreChord})$`);
 
   return tokens.every(token => chordTokenRegex.test(token));
 };
