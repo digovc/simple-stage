@@ -103,8 +103,8 @@ const getContentLine = (lines: string[], index: number) => {
 };
 
 const listenTranspose = () => {
-  transposeService.onTranspose$.pipe(takeUntil(onDestroyed$)).subscribe((isUp) => {
-    transposeChords(isUp);
+  transposeService.onTranspose$.pipe(takeUntil(onDestroyed$)).subscribe((semitones) => {
+    transposeChords(semitones);
   });
 }
 
@@ -155,14 +155,14 @@ const scrollToTop = () => {
   divContainerRef.value?.scrollTo(0, 0);
 };
 
-const transposeChords = (isUp: boolean) => {
+const transposeChords = (semitones: number) => {
   for (const line of renderLines.value ?? []) {
     if (line.type !== 'chords') continue;
-    line.text = transposeLine(line.text, isUp);
+    line.text = transposeLine(line.text, semitones);
   }
 
   let transpose = music.value.transpose ?? 0;
-  transpose = isUp ? transpose + 1 : transpose - 1;
+  transpose = transpose + semitones;
 
   while (transpose > 11) transpose -= 12;
   while (transpose < -11) transpose += 12;
@@ -171,12 +171,26 @@ const transposeChords = (isUp: boolean) => {
   musicRepository.save(music.value);
 }
 
-const transposeLine = (line: string, isUp: boolean) => {
-  if (isUp) {
-    return ChordTransposer.transpose(line).up(1).toString();
+const transposeLine = (line: string, semitones: number) => {
+  if (semitones > 0) {
+    return ChordTransposer.transpose(line).up(semitones).toString();
   } else {
-    return ChordTransposer.transpose(line).down(1).toString();
+    return ChordTransposer.transpose(line).down(Math.abs(semitones)).toString();
   }
+}
+
+const getFirstChord = (): string => {
+  for (const line of renderLines.value ?? []) {
+    if (line.type === 'chords') {
+      const tokens = line.text.trim().split(/\s+/);
+      for (const token of tokens) {
+        if (ChordTransposer.Chord.parse(token)) {
+          return ChordTransposer.Chord.parse(token).toString();
+        }
+      }
+    }
+  }
+  return "";
 }
 
 const transposeLineByNumber = (line: string, transpose: number) => {
@@ -219,7 +233,7 @@ const edit = () => {
 };
 
 const openTranspose = () => {
-  transposeRef.value?.show();
+  transposeRef.value?.show(getFirstChord());
 };
 
 const openSong = (id: string) => {
