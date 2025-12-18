@@ -1,10 +1,10 @@
 import { Subject } from "rxjs";
 
 class TransposeService {
-  onTranspose$ = new Subject<boolean>();
+  onTranspose$ = new Subject<number>();
 
-  changeTranspose(isUp: boolean) {
-    this.onTranspose$.next(isUp);
+  changeTranspose(semitones: number) {
+    this.onTranspose$.next(semitones);
   }
 }
 
