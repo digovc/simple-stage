@@ -1,7 +1,7 @@
 <template>
   <div>
     <Dialog>
-      <div class="space-y-8">
+      <form class="space-y-8" @submit.prevent="createPlaylist">
         <div>
           New playlist
         </div>
@@ -10,14 +10,14 @@
           <input class="border border-gray-300 rounded-md p-2 text-black" placeholder="Tags" v-model="tags"/>
         </div>
         <div class="flex justify-end space-x-2">
-          <PrimaryButton @click="createPlaylist">
+          <PrimaryButton type="submit">
             Create
           </PrimaryButton>
           <SecundaryButton @click="emits('onClose')">
             Cancel
           </SecundaryButton>
         </div>
-      </div>
+      </form>
     </Dialog>
   </div>
 </template>

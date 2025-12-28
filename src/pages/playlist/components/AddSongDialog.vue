@@ -1,7 +1,7 @@
 <template>
   <div>
     <Dialog>
-      <div class="space-y-4">
+      <form class="space-y-4" @submit.prevent="save">
         <div class="text-2xl">
           Select songs
         </div>
@@ -24,14 +24,14 @@
           </template>
         </div>
         <div class="space-x-2 flex justify-end">
-          <PrimaryButton @click="save">
+          <PrimaryButton type="submit">
             Save
           </PrimaryButton>
           <SecundaryButton @click="emits('onClose')">
             Cancel
           </SecundaryButton>
         </div>
-      </div>
+      </form>
     </Dialog>
   </div>
 </template>
