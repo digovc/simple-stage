@@ -12,17 +12,18 @@
     <div class="grow overflow-y-auto p-2 pb-48">
       <draggable class="space-y-2" :list="musics" @change="saveNewOrder" handle=".handle">
         <div v-for="music in musics" :key="music.id"
-             class="border p-4 rounded flex hover:shadow bg-gray-600">
-          <div class="flex items-center w-full space-x-4 whitespace-nowrap overflow-x-hidden">
+             class="px-4 py-3 rounded-lg flex transition-colors duration-150 bg-white/[0.04] hover:bg-white/[0.08]">
+          <div class="flex items-center w-full gap-3 whitespace-nowrap overflow-x-hidden">
             <input type="checkbox" v-model="(music as any).isSelected"
+                   class="w-4 h-4 accent-emerald-500 cursor-pointer"
                    @change="refreshMusicSelected(music.id, (music as any).isSelected)"/>
-            <div class="grow cursor-pointer" @click="renderMusic(music)">
+            <div class="grow cursor-pointer text-sm" :class="{ 'line-through opacity-50': (music as any).isSelected }" @click="renderMusic(music)">
               {{ music.title }}
             </div>
-            <div class="text-sm text-gray-600 cursor-pointer" @click="renderMusic(music)">
+            <div class="text-xs opacity-40 cursor-pointer" :class="{ 'line-through': (music as any).isSelected }" @click="renderMusic(music)">
               {{ music.artist }}
             </div>
-            <FontAwesomeIcon :icon="faGripLines" class="text-gray-400 cursor-move text-2xl handle"/>
+            <FontAwesomeIcon :icon="faGripLines" class="opacity-30 hover:opacity-60 cursor-move text-lg handle transition-opacity duration-150"/>
           </div>
         </div>
       </draggable>
@@ -76,19 +77,34 @@ const refreshMusicSelected = (musicId: string, isSelected: boolean) => {
   if (playlist.value === null) return;
   const selectedMusicIds = playlist.value.selectedMusicIds ?? [];
 
-  if (isSelected && !selectedMusicIds.includes(musicId)) {
-    selectedMusicIds.push(musicId);
+  if (isSelected) {
+    // Mark this song and all preceding songs as selected
+    const clickedIndex = musics.value.findIndex(m => m.id === musicId);
+    if (clickedIndex === -1) return;
+    for (let i = 0; i <= clickedIndex; i++) {
+      const id = musics.value[i].id;
+      if (!selectedMusicIds.includes(id)) {
+        selectedMusicIds.push(id);
+      }
+      (musics.value[i] as any).isSelected = true;
+    }
   } else {
-    const index = selectedMusicIds.indexOf(musicId);
-
-    if (index > -1) {
-      selectedMusicIds.splice(index, 1);
+    // Unmark this song and all following songs
+    const clickedIndex = musics.value.findIndex(m => m.id === musicId);
+    if (clickedIndex === -1) return;
+    for (let i = clickedIndex; i < musics.value.length; i++) {
+      const id = musics.value[i].id;
+      const idx = selectedMusicIds.indexOf(id);
+      if (idx > -1) {
+        selectedMusicIds.splice(idx, 1);
+      }
+      (musics.value[i] as any).isSelected = false;
     }
   }
 
   playlist.value.selectedMusicIds = selectedMusicIds;
   playlistRepository.save(playlist.value);
-}
+};
 
 const renderMusic = (music: MusicRecord) => {
   const path = `/render/${ music.id }`;

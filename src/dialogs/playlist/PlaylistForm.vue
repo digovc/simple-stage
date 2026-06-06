@@ -6,7 +6,7 @@
           New playlist
         </div>
         <div class="flex flex-col space-y-2">
-          <input class="border border-gray-300 rounded-md p-2 text-black" placeholder="Playlist name" v-model="title"/>
+          <input ref="titleInput" class="border border-gray-300 rounded-md p-2 text-black" placeholder="Playlist name" v-model="title"/>
           <input class="border border-gray-300 rounded-md p-2 text-black" placeholder="Tags" v-model="tags"/>
         </div>
         <div class="flex justify-end space-x-2">
@@ -28,11 +28,16 @@ import PrimaryButton from "@/components/PrimaryButton.vue";
 import type { PlaylistRecord } from "@/records/playlist.record";
 import { playlistRepository } from "@/services/playlist.repository";
 import SecundaryButton from "@/components/SecundaryButton.vue";
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 
 const emits = defineEmits({ onClose: () => true })
 const title = ref("")
 const tags = ref("")
+const titleInput = ref<HTMLInputElement | null>(null)
+
+onMounted(() => {
+  titleInput.value?.focus();
+});
 
 const createPlaylist = () => {
   const playlist = {

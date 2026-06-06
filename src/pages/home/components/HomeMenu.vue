@@ -14,6 +14,14 @@
     <div>
       <PlaylistForm v-if="isPlaylistDialogOpen" @onClose="isPlaylistDialogOpen = false"/>
     </div>
+
+    <ConfirmDialog
+      :visible="confirm.visible.value"
+      :title="confirm.title.value"
+      :message="confirm.message.value"
+      @on-confirm="confirm.onConfirm"
+      @on-cancel="confirm.onCancel"
+    />
   </div>
 </template>
 
@@ -24,9 +32,12 @@ import PrimaryButton from "@/components/PrimaryButton.vue";
 import { faUpload, faDownload } from "@fortawesome/free-solid-svg-icons";
 import { ref } from "vue";
 import { useRouter } from "vue-router";
+import { useConfirm } from "@/composables/useConfirm";
+import ConfirmDialog from "@/components/ConfirmDialog.vue";
 
 const router = useRouter()
 const isPlaylistDialogOpen = ref(false)
+const confirm = useConfirm()
 
 const exportAllData = () => {
   const data = JSON.stringify(localStorage);
@@ -46,26 +57,30 @@ const exportAllData = () => {
   document.body.removeChild(a);
 }
 
-const importAllData = () => {
-  if (confirm("Deseja realmente importar e sobrescrever os dados?")) {
-    const input = document.createElement('input')
-    input.type = 'file'
-    input.accept = 'text/plain'
-    input.onchange = () => {
-      const file = input.files?.[0]
-      if (!file) return
-      const reader = new FileReader()
-      reader.onload = () => {
-        const data = reader.result as string
-        const parsedData = JSON.parse(data)
-        Object.keys(parsedData).forEach(key => {
-          localStorage.setItem(key, parsedData[key])
-        })
-        window.location.reload()
-      }
-      reader.readAsText(file)
+const importAllData = async () => {
+  const confirmed = await confirm.ask({
+    title: "Importar dados",
+    message: "Deseja realmente importar e sobrescrever os dados?"
+  })
+  if (!confirmed) return
+
+  const input = document.createElement('input')
+  input.type = 'file'
+  input.accept = 'text/plain'
+  input.onchange = () => {
+    const file = input.files?.[0]
+    if (!file) return
+    const reader = new FileReader()
+    reader.onload = () => {
+      const data = reader.result as string
+      const parsedData = JSON.parse(data)
+      Object.keys(parsedData).forEach(key => {
+        localStorage.setItem(key, parsedData[key])
+      })
+      window.location.reload()
     }
-    input.click()
+    reader.readAsText(file)
   }
+  input.click()
 }
 </script>

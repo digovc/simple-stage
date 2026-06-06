@@ -1,7 +1,11 @@
 <template>
   <div class="flex">
-    <div class="border rounded-full py-2 px-4 inline w-96 focus-within:shadow bg-gray-600">
-      <input type="text" placeholder="Search" class="w-full outline-none bg-gray-600" v-model="query"/>
+    <div class="rounded-full py-2 px-5 inline-flex items-center gap-2 w-96 bg-white/[0.06] focus-within:bg-white/[0.09] transition-colors duration-150">
+      <svg class="w-4 h-4 opacity-40 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <circle cx="11" cy="11" r="8"/>
+        <path d="m21 21-4.3-4.3" stroke-linecap="round"/>
+      </svg>
+      <input type="text" placeholder="Search" class="w-full outline-none bg-transparent text-white placeholder-white/30 text-sm" v-model="query"/>
     </div>
   </div>
 </template>

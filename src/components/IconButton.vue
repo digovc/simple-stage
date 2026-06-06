@@ -1,7 +1,7 @@
 <template>
   <DefaultButton :disabled="isDisabled">
-    <div class="w-9 h-9 flex justify-center items-center rounded hover:bg-gray-700 border border-gray-300"
-         :class="{ 'opacity-50 cursor-not-allowed': isDisabled }">
+    <div class="w-9 h-9 flex justify-center items-center rounded-lg transition-colors duration-200"
+         :class="isDisabled ? 'opacity-30 cursor-not-allowed' : 'bg-white/5 hover:bg-white/10'">
       <FontAwesomeIcon :icon="icon"/>
     </div>
   </DefaultButton>

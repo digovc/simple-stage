@@ -4,7 +4,7 @@
       Editor
     </div>
     <div class="grow border rounded focus-within:shadow outline-1 overflow-x-hidden">
-      <textarea class="w-full h-full p-2 pt-1 -mb-1.5 outline-none resize-none font-mono text-gray-700"
+      <textarea ref="textarea" class="w-full h-full p-2 pt-1 -mb-1.5 outline-none resize-none font-mono text-gray-700"
                 v-model="content" placeholder="Put your music here..."></textarea>
     </div>
     <div class="flex justify-end space-x-2">
@@ -28,6 +28,7 @@ import { useRouter } from "vue-router";
 
 const id = ref<string>("");
 const content = ref<string>("");
+const textarea = ref<HTMLTextAreaElement | null>(null);
 const router = useRouter();
 
 const cancel = () => {
@@ -70,5 +71,6 @@ const save = () => {
 
 onMounted(() => {
   loadMusic();
+  textarea.value?.focus();
 });
 </script>

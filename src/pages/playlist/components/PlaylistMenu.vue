@@ -2,7 +2,7 @@
   <div>
     <div class="space-x-2">
       <PrimaryButton @click="isAddSongDialogVisible = true">
-        + Song
+        Songs
       </PrimaryButton>
       <SecundaryButton @click="backToHome">
         Close
@@ -13,6 +13,14 @@
     </div>
 
     <AddSongDialog v-if="isAddSongDialogVisible" @onClose="isAddSongDialogVisible = false" @onSave="changePlaylist"/>
+
+    <ConfirmDialog
+      :visible="confirm.visible.value"
+      :title="confirm.title.value"
+      :message="confirm.message.value"
+      @on-confirm="confirm.onConfirm"
+      @on-cancel="confirm.onCancel"
+    />
   </div>
 </template>
 
@@ -26,9 +34,12 @@ import DangerButton from "@/components/DangerButton.vue";
 import SecundaryButton from "@/components/SecundaryButton.vue";
 import PrimaryButton from "@/components/PrimaryButton.vue";
 import AddSongDialog from "@/pages/playlist/components/AddSongDialog.vue";
+import ConfirmDialog from "@/components/ConfirmDialog.vue";
+import { useConfirm } from "@/composables/useConfirm";
 
 const router = useRouter();
 const isAddSongDialogVisible = ref(false);
+const confirm = useConfirm();
 const emits = defineEmits(["onMusicsChanged"]);
 
 const props = defineProps({
@@ -47,9 +58,12 @@ const changePlaylist = () => {
   emits("onMusicsChanged");
 }
 
-const deletePlaylist = () => {
-  const isConfirmed = confirm(`Are you sure you want to delete ${ props.playlist.title }?`);
-  if (!isConfirmed) return;
+const deletePlaylist = async () => {
+  const confirmed = await confirm.ask({
+    title: "Excluir playlist",
+    message: `Deseja realmente excluir \"${props.playlist.title}\"?`
+  });
+  if (!confirmed) return;
   playlistRepository.delete(props.playlist.id);
   router.replace("/home");
 }
